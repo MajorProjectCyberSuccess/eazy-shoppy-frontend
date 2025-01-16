@@ -1,10 +1,24 @@
+import "./Home.css";
+import Slider from "react-slick";
 import Banner from "../../components/Banners/Banner";
 import CatSlider from "../../components/CatSlider/CatSlider";
 import HomeSlider from "./HomeSlider";
-import "./Home.css";
 import Product from "../../components/Product/Product";
+import Banner1 from "./images/banner.jpg";
+import Banner2 from "./images/banner1.jpg";
+import Banner3 from "./images/banner2.jpg";
+import Banner4 from "./images/banner3.jpg";
+import Banner5 from "./images/banner4.jpg";
 
 const Home = () => {
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    arrows: true,
+  };
   return (
     <>
       <HomeSlider />
@@ -54,7 +68,7 @@ const Home = () => {
             </ul>
           </div>
 
-          <div className="row productRow">
+          <div className="row productRow pt-2">
             <div className="item">
               <Product tag="sale" />
             </div>
@@ -84,6 +98,75 @@ const Home = () => {
             </div>
             <div className="item">
               <Product />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="bannersSection pt-0 pb-0">
+        <div className="container-fluid">
+          <div className="row">
+            <ul className="d-flex align-items-center">
+              <li className="item item-inline">
+                <img src={Banner4} />
+              </li>
+              <li className="item item-inline">
+                <img src={Banner3} />
+              </li>
+              <li className="item item-inline">
+                <img src={Banner2} />
+              </li>
+              <li className="item item-inline">
+                <img src={Banner5} />
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <section className="homeProducts homeProductsRow2">
+        <div className="container-fluid">
+          <div className="d-flex align-items-center">
+            <h2 className="hd mb-0 mt-0 mx-1">Featured Products</h2>
+          </div>
+          <br />
+          <div className="row">
+            <div className="col-md-3 pr-5 proBanner">
+              <img src={Banner1} alt="Banner" className="w-100 transition" />
+            </div>
+            <div className="col-md-9">
+              <Slider {...settings} className="prodSlider">
+                <div className="item">
+                  <Product tag="sale" />
+                </div>
+                <div className="item">
+                  <Product tag="hot" />
+                </div>
+                <div className="item">
+                  <Product tag="new" />
+                </div>
+                <div className="item">
+                  <Product />
+                </div>
+                <div className="item">
+                  <Product tag="best" />
+                </div>
+                <div className="item">
+                  <Product />
+                </div>
+                <div className="item">
+                  <Product tag="new" />
+                </div>
+                <div className="item">
+                  <Product tag="best" />
+                </div>
+                <div className="item">
+                  <Product tag="sale" />
+                </div>
+                <div className="item">
+                  <Product />
+                </div>
+              </Slider>
             </div>
           </div>
         </div>
