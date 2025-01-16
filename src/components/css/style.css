@@ -1,0 +1,16 @@
+.bg-g {
+  background: #3bb77e;
+}
+.text-g {
+  color: #3bb77e;
+}
+
+.hd {
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.transition {
+  transition: all 0.3s ease-in-out;
+}
