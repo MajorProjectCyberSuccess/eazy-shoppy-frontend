@@ -10,9 +10,9 @@ body {
 .subscribe-section {
   background-color: #eaffef;
   border-radius: 15px;
-  padding: 30px;
+  padding: 0px 30px;
   margin: 20px auto;
-  max-width: 1450px;
+  max-width: 1430px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -29,8 +29,7 @@ body {
 }
 
 .subscribe-text {
-  max-width: 45%;
-  flex: 0.9;
+  max-width: 75%;
 }
 
 .subscribe-text h1 {
@@ -48,10 +47,8 @@ body {
 
 .subscribe-form {
   display: flex;
+  width: 500px;
   align-items: center;
-  gap: 10px;
-  margin-left: 20px;
-  flex: 1;
 }
 
 .email-input {
@@ -62,6 +59,7 @@ body {
   padding: 10px 15px;
   flex: 1;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 .email-input i {
@@ -81,17 +79,20 @@ body {
 .subscribe-button {
   background-color: #48c774;
   border: none;
-  padding: 10px 20px;
-  border-radius: 25px;
-  font-size: 1rem;
+  padding: 16px 32px;
+  border-radius: 40px;
+  left: 450px;
+  font-size: 18px;
+  font-weight: 500;
   color: #fff;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: absolute;
   transition: background-color 0.3s;
 }
 
 .subscribe-button:hover {
-  background-color: #3ba862;
+  background-color: #359858;
 }
 
 .subscribe-image {

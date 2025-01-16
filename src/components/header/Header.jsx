@@ -14,6 +14,7 @@ import { CiSettings } from "react-icons/ci";
 import { CiLogout } from "react-icons/ci";
 import Select from "../selectDrop/Select";
 import Nav from "./nav/Nav";
+import Logo from "./images/EazyShoppy.png";
 
 const Header = () => {
   const [isOpenDropDown, setIsOpenDropDown] = useState(false);
@@ -63,7 +64,7 @@ const Header = () => {
         <div className="container-fluid">
           <div className="row">
             <div className="col-sm-2">
-              <img src="" alt="logo" />
+              <img src={Logo} className="logo" />
             </div>
 
             {/* header search start hear */}
