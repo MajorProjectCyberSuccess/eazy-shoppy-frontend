@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto&display=swap");
+
+.homeProducts {
+  width: 100%;
+  height: auto;
+  padding: 30px 15px;
+  font-family: "Montserrat", sans-serif !important;
+}
+
+.filterTab {
+  margin-left: 35.2rem;
+}
+
+.filterTab li {
+  margin-left: 20px;
+}
+
+.filterTab li a {
+  color: #000;
+  text-decoration: none;
+  font-size: 16px;
+  transition: all 0.2s ease-in-out;
+}
+
+.filterTab li a:hover {
+  color: #3bb77e !important;
+}
+
+.homeProducts .productRow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 30px 0px;
+}
+
+.homeProducts .productRow .item {
+  width: 20%;
+  padding: 15px 15px;
+}

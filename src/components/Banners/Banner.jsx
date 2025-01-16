@@ -6,7 +6,7 @@ import Banner3 from "./images/artical3.png";
 
 const Banner = () => {
   return (
-    <div className="bannerSection">
+    <div className="bannerSection mx-3">
       <div className="container-fluid">
         <div className="row">
           <div className="col">
