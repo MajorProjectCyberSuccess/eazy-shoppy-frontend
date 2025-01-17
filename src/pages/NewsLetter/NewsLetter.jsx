@@ -1,8 +1,10 @@
+import { useRef } from "react";
 import "./NewsLetter.css";
 import BannerImage from "../../assets/images/bannerximage.png";
 import { TbSend } from "react-icons/tb";
 
 const NewsLetter = () => {
+  const inputRef = useRef(null);
   return (
     <section className="subscribe-section">
       <div className="subscribe-container">
@@ -18,11 +20,20 @@ const NewsLetter = () => {
               <input
                 type="email"
                 className="m-1 px-3"
+                ref={inputRef}
                 placeholder="Enter Your Email"
                 required
               />
             </div>
-            <button type="button" className="subscribe-button">
+            <button
+              type="button"
+              onClick={() => {
+                if (inputRef.current) {
+                  inputRef.current.value = "";
+                }
+              }}
+              className="subscribe-button"
+            >
               Subscribe
             </button>
           </form>

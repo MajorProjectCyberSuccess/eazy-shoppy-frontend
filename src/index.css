@@ -1,4 +1,6 @@
 body {
+  background: #ffffff;
+
   --sb-track-color: #ffffff;
   --sb-thumb-color: #45896e;
   --sb-size: 8px;

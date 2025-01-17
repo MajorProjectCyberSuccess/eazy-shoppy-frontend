@@ -118,3 +118,15 @@
   padding: 15px 0px;
   padding-right: 20px !important;
 }
+
+.homeProductsRow2 .slick-arrow:hover.slick-next::before {
+  color: #ffffff !important;
+}
+
+.homeProductsRow2 .slick-arrow:hover.slick-prev::before {
+  color: #ffffff !important;
+}
+
+.topProductsSection {
+  padding: 35px 0px;
+}

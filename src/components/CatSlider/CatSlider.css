@@ -83,3 +83,11 @@
   color: #ffffff !important;
   transition: background-color 0.3s;
 }
+
+.cat_slider_menu .slick-arrow:hover.slick-next::before {
+  color: #ffffff !important;
+}
+
+.cat_slider_menu .slick-arrow:hover.slick-prev::before {
+  color: #ffffff !important;
+}

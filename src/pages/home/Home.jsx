@@ -10,6 +10,8 @@ import Banner3 from "./images/banner2.jpg";
 import Banner4 from "./images/banner3.jpg";
 import Banner5 from "./images/banner4.jpg";
 import NewsLetter from "../NewsLetter/NewsLetter";
+import TopPro from "./TopProducts/TopPro";
+import Footer from "../../components/footer/Footer";
 
 const Home = () => {
   const settings = {
@@ -124,6 +126,24 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <section className="topProductsSection p-4">
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col">
+              <TopPro title="Top Selling" />
+            </div>
+            <div className="col">
+              <TopPro title="Trending Products" />
+            </div>
+            <div className="col">
+              <TopPro title="Recently added" />
+            </div>
+            <div className="col">
+              <TopPro title="Top Rated" />
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section className="homeProducts homeProductsRow2">
         <div className="container-fluid">
@@ -172,8 +192,10 @@ const Home = () => {
           </div>
         </div>
       </section>
+
       <br />
       <NewsLetter />
+      <Footer />
     </>
   );
 };
