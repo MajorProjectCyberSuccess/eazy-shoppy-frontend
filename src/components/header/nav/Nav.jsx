@@ -173,9 +173,9 @@ const Nav = () => {
                       </div>
                     </div>
                   </div>
-                  {/* dropdown Mega menu start*/}
+                  {/* dropdown Mega menu end*/}
                 </li>
-                {/* Mega menu start*/}
+                {/* Mega menu end*/}
 
                 <li className="list-inline-item">
                   <button className="navTabs">
@@ -219,7 +219,7 @@ const Nav = () => {
                       </li>
                       <li>
                         <button>
-                          <Link to="/about">Purchase Guide</Link>
+                          <Link to="/notfound">Purchase Guide</Link>
                         </button>
                       </li>
                       <li>

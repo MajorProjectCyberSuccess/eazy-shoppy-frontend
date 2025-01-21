@@ -5,6 +5,7 @@ import Home from "./pages/home/Home";
 import Listing from "./pages/Listing/Listing";
 import NewsLetter from "./components/NewsLetter/NewsLetter";
 import Footer from "./components/footer/Footer";
+import NotFound from "./pages/NotFound/NotFound";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route exact={true} path="/" element={<Home />} />
           <Route exact={true} path="/listing" element={<Listing />} />
+          <Route exact={true} path="/notfound" element={<NotFound />} />
         </Routes>
         <NewsLetter />
         <Footer />
