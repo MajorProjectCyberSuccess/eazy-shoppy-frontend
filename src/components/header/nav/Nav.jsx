@@ -1,5 +1,5 @@
 import "./Nav.css";
-import "../../css/style.css";
+import "../../../css/style.css";
 import { Link } from "react-router-dom";
 import { RiArrowDownSLine } from "react-icons/ri";
 import { BiCategoryAlt } from "react-icons/bi";
@@ -25,69 +25,72 @@ const Nav = () => {
               <ul className="list list-inline">
                 <li className="list-inline-item">
                   <button className="navTabs">
-                    <Link>Home</Link>
+                    <Link to="/">Home</Link>
                   </button>
                 </li>
                 <li className="list-inline-item">
                   <button className="navTabs">
-                    <Link>About</Link>
+                    <Link to="/listing">All Products</Link>
                   </button>
                 </li>
                 <li className="list-inline-item">
                   <button className="navTabs">
                     <Link>Shop</Link>
                   </button>
-                  {/* dropdown menu start*/}
+                  {/* shop dropdown menu start*/}
                   <div className="dropdown_menu">
                     <ul>
                       <li>
                         <button>
-                          <Link to="/about">About Us</Link>
+                          <Link to="/listing/clothing">Clothing</Link>
                         </button>
                       </li>
                       <li>
                         <button>
-                          <Link to="/about">Contact</Link>
+                          <Link to="/listing/electronics">Electronics</Link>
                         </button>
                       </li>
                       <li>
                         <button>
-                          <Link to="/about">My Account</Link>
+                          <Link to="/listing/beauty">Beauty & wellness</Link>
                         </button>
                       </li>
                       <li>
                         <button>
-                          <Link to="/about">Login</Link>
+                          <Link to="/listing/jewellery">Jewellery</Link>
                         </button>
                       </li>
                       <li>
                         <button>
-                          <Link to="/about">Register</Link>
+                          <Link to="/listing/kids">Kids</Link>
                         </button>
                       </li>
                       <li>
                         <button>
-                          <Link to="/about">Purchase Guide</Link>
+                          <Link to="/listing/shoes">Shoes</Link>
                         </button>
                       </li>
                       <li>
                         <button>
-                          <Link to="/about">Privacy Policy</Link>
+                          <Link to="/listing/kitchen">Home & Kitchen</Link>
                         </button>
                       </li>
                       <li>
                         <button>
-                          <Link to="/about">Terms of Service</Link>
+                          <Link to="/listing/bags">Bags</Link>
                         </button>
                       </li>
                     </ul>
                   </div>
-                  {/* dropdown menu start*/}
+                  {/* shop dropdown menu start*/}
                 </li>
+
+                {/* Mega menu start*/}
+
                 <li className="list-inline-item position-static">
                   <button className="navTabs">
                     <Link>
-                      Mega Menu <RiArrowDownSLine />
+                      Categories <RiArrowDownSLine />
                     </Link>
                   </button>
                   {/* dropdown Mega menu start*/}
@@ -172,56 +175,12 @@ const Nav = () => {
                   </div>
                   {/* dropdown Mega menu start*/}
                 </li>
+                {/* Mega menu start*/}
+
                 <li className="list-inline-item">
                   <button className="navTabs">
                     <Link>Vendors</Link>
                   </button>
-                  {/* dropdown menu start*/}
-                  <div className="dropdown_menu">
-                    <ul>
-                      <li>
-                        <button>
-                          <Link to="/about">About Us</Link>
-                        </button>
-                      </li>
-                      <li>
-                        <button>
-                          <Link to="/about">Contact</Link>
-                        </button>
-                      </li>
-                      <li>
-                        <button>
-                          <Link to="/about">My Account</Link>
-                        </button>
-                      </li>
-                      <li>
-                        <button>
-                          <Link to="/about">Login</Link>
-                        </button>
-                      </li>
-                      <li>
-                        <button>
-                          <Link to="/about">Register</Link>
-                        </button>
-                      </li>
-                      <li>
-                        <button>
-                          <Link to="/about">Purchase Guide</Link>
-                        </button>
-                      </li>
-                      <li>
-                        <button>
-                          <Link to="/about">Privacy Policy</Link>
-                        </button>
-                      </li>
-                      <li>
-                        <button>
-                          <Link to="/about">Terms of Service</Link>
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                  {/* dropdown menu start*/}
                 </li>
                 <li className="list-inline-item">
                   <button className="navTabs">
@@ -230,7 +189,7 @@ const Nav = () => {
                     </Link>
                   </button>
 
-                  {/* dropdown menu start*/}
+                  {/* All pages dropdown menu start*/}
                   <div className="dropdown_menu">
                     <ul>
                       <li>
@@ -240,7 +199,7 @@ const Nav = () => {
                       </li>
                       <li>
                         <button>
-                          <Link to="/about">Contact</Link>
+                          <Link to="/contact">Contact</Link>
                         </button>
                       </li>
                       <li>
@@ -250,12 +209,12 @@ const Nav = () => {
                       </li>
                       <li>
                         <button>
-                          <Link to="/about">Login</Link>
+                          <Link to="/login">Login</Link>
                         </button>
                       </li>
                       <li>
                         <button>
-                          <Link to="/about">Register</Link>
+                          <Link to="/register">Register</Link>
                         </button>
                       </li>
                       <li>
@@ -275,7 +234,7 @@ const Nav = () => {
                       </li>
                     </ul>
                   </div>
-                  {/* dropdown menu start*/}
+                  {/* All pages dropdown menu start*/}
                 </li>
                 <li className="list-inline-item">
                   <button className="navTabs">

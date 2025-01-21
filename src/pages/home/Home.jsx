@@ -9,9 +9,7 @@ import Banner2 from "./images/banner1.jpg";
 import Banner3 from "./images/banner2.jpg";
 import Banner4 from "./images/banner3.jpg";
 import Banner5 from "./images/banner4.jpg";
-import NewsLetter from "../NewsLetter/NewsLetter";
 import TopPro from "./TopProducts/TopPro";
-import Footer from "../../components/footer/Footer";
 
 const Home = () => {
   const settings = {
@@ -194,8 +192,6 @@ const Home = () => {
       </section>
 
       <br />
-      <NewsLetter />
-      <Footer />
     </>
   );
 };
