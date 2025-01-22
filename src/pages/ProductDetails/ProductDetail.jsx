@@ -20,7 +20,6 @@ import Rating from "@mui/material/Rating";
 
 import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
-import ReviewForm from "../../components/RevireForm/ReviewForm";
 import Product from "../../components/Product/Product";
 
 const ProductDetail = () => {
@@ -56,6 +55,42 @@ const ProductDetail = () => {
     slidesToShow: 5,
     slidesToScroll: 1,
     arrows: true,
+  };
+
+  const [reviews, setReviews] = useState([
+    {
+      id: 1,
+      name: "Siman",
+      date: "Dec 4, 2024 at 3:12 pm",
+      rating: 3,
+      comment:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum ullam consectetur quae modi cumque.",
+    },
+  ]); // Initial reviews
+
+  const [formData, setFormData] = useState({
+    name: "",
+    rating: 0,
+    comment: "",
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newReview = {
+      id: reviews.length + 1,
+      name: formData.name,
+      date: new Date().toLocaleString(),
+      rating: formData.rating,
+      comment: formData.comment,
+    };
+
+    setReviews([newReview, ...reviews]); // Add the new review to the top
+    setFormData({ name: "", rating: 0, comment: "" }); // Reset the form
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -353,145 +388,93 @@ const ProductDetail = () => {
                       <br />
                       <div className="customerReviews">
                         <br />
-                        <div className="card p-4 reviewsCard flex-row">
-                          <div className="image">
-                            <div className="rounded-circle">
-                              <img
-                                src="https://i.imgur.com/V3ICjlm.jpg"
-                                alt="image"
-                              />
+                        {reviews.map((review) => (
+                          <div
+                            className="card p-4 reviewsCard flex-row"
+                            key={review.id}
+                          >
+                            <div className="image">
+                              <div className="rounded-circle">
+                                <img
+                                  src="https://i.imgur.com/V3ICjlm.jpg"
+                                  alt="image"
+                                  className="img-fluid"
+                                />
+                              </div>
+                              <span className="text-g d-block text-center fw-bold">
+                                {review.name}
+                              </span>
                             </div>
-                            <span className="text-g d-block text-center fw-bold">
-                              Siman
-                            </span>
-                          </div>
-                          <div className="info">
-                            <div className="d-flex align-items-center mb-3">
-                              <h5 className="datePosted mb-0">
-                                Dec 4, 2024 at 3:12 pm
-                              </h5>
-                              <Rating
-                                name="read-only"
-                                value={3}
-                                readOnly
-                                className="ml-auto"
-                              />
+                            <div className="info">
+                              <div className="d-flex align-items-center mb-3">
+                                <h5 className="datePosted mb-0">
+                                  {review.date}
+                                </h5>
+                                <Rating
+                                  name="read-only"
+                                  value={review.rating}
+                                  readOnly
+                                  className="ml-auto"
+                                />
+                              </div>
+                              <p>{review.comment}</p>
                             </div>
-                            <p>
-                              Lorem ipsum dolor sit amet consectetur adipisicing
-                              elit. Voluptatum ullam consectetur quae modi
-                              cumque. Voluptatibus autem tempore odio nihil
-                              omnis quibusdam. Rem, officiis alias. Obcaecati
-                              voluptatum deleniti non consectetur atque.
-                            </p>
                           </div>
-                        </div>
-                        <div className="card p-4 reviewsCard flex-row">
-                          <div className="image">
-                            <div className="rounded-circle">
-                              <img
-                                src="https://i.imgur.com/V3ICjlm.jpg"
-                                alt="image"
-                              />
-                            </div>
-                            <span className="text-g d-block text-center fw-bold">
-                              Siman
-                            </span>
-                          </div>
-                          <div className="info">
-                            <div className="d-flex align-items-center mb-3">
-                              <h5 className="datePosted mb-0">
-                                Dec 4, 2024 at 3:12 pm
-                              </h5>
-                              <Rating
-                                name="read-only"
-                                value={3}
-                                readOnly
-                                className="ml-auto"
-                              />
-                            </div>
-                            <p>
-                              Lorem ipsum dolor sit amet consectetur adipisicing
-                              elit. Voluptatum ullam consectetur quae modi
-                              cumque. Voluptatibus autem tempore odio nihil
-                              omnis quibusdam. Rem, officiis alias. Obcaecati
-                              voluptatum deleniti non consectetur atque.
-                            </p>
-                          </div>
-                        </div>
-                        <div className="card p-4 reviewsCard flex-row">
-                          <div className="image">
-                            <div className="rounded-circle">
-                              <img
-                                src="https://i.imgur.com/V3ICjlm.jpg"
-                                alt="image"
-                              />
-                            </div>
-                            <span className="text-g d-block text-center fw-bold">
-                              Siman
-                            </span>
-                          </div>
-                          <div className="info">
-                            <div className="d-flex align-items-center mb-3">
-                              <h5 className="datePosted mb-0">
-                                Dec 4, 2024 at 3:12 pm
-                              </h5>
-                              <Rating
-                                name="read-only"
-                                value={3}
-                                readOnly
-                                className="ml-auto"
-                              />
-                            </div>
-                            <p>
-                              Lorem ipsum dolor sit amet consectetur adipisicing
-                              elit. Voluptatum ullam consectetur quae modi
-                              cumque. Voluptatibus autem tempore odio nihil
-                              omnis quibusdam. Rem, officiis alias. Obcaecati
-                              voluptatum deleniti non consectetur atque.
-                            </p>
-                          </div>
-                        </div>
-                        <div className="card p-4 reviewsCard flex-row">
-                          <div className="image">
-                            <div className="rounded-circle">
-                              <img
-                                src="https://i.imgur.com/V3ICjlm.jpg"
-                                alt="image"
-                              />
-                            </div>
-                            <span className="text-g d-block text-center fw-bold">
-                              Siman
-                            </span>
-                          </div>
-                          <div className="info">
-                            <div className="d-flex align-items-center mb-3">
-                              <h5 className="datePosted mb-0">
-                                Dec 4, 2024 at 3:12 pm
-                              </h5>
-                              <Rating
-                                name="read-only"
-                                value={3}
-                                readOnly
-                                className="ml-auto"
-                              />
-                            </div>
-                            <p>
-                              Lorem ipsum dolor sit amet consectetur adipisicing
-                              elit. Voluptatum ullam consectetur quae modi
-                              cumque. Voluptatibus autem tempore odio nihil
-                              omnis quibusdam. Rem, officiis alias. Obcaecati
-                              voluptatum deleniti non consectetur atque.
-                            </p>
-                          </div>
-                        </div>
+                        ))}
                       </div>
                       <br />
                       <br />
                       <br />
 
                       <div>
-                        <ReviewForm />
+                        <form onSubmit={handleSubmit} className="reviewForm">
+                          <div className="mb-3">
+                            <label htmlFor="name" className="form-label">
+                              Name:
+                            </label>
+                            <input
+                              type="text"
+                              id="name"
+                              name="name"
+                              className="form-control"
+                              value={formData.name}
+                              onChange={handleChange}
+                              required
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <label htmlFor="rating" className="form-label">
+                              Rating:
+                            </label>
+                            <Rating
+                              name="rating"
+                              value={formData.rating}
+                              onChange={(e, newValue) =>
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  rating: newValue,
+                                }))
+                              }
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <label htmlFor="comment" className="form-label">
+                              Comment:
+                            </label>
+                            <textarea
+                              id="comment"
+                              name="comment"
+                              className="form-control"
+                              rows="3"
+                              value={formData.comment}
+                              onChange={handleChange}
+                              required
+                            ></textarea>
+                          </div>
+                          <button type="submit" className="btn btn-primary">
+                            Submit Review
+                          </button>
+                        </form>
                       </div>
                     </div>
                     <div className="col-md-2"></div>
