@@ -178,7 +178,7 @@
 
 .productContainer .info button:hover {
   background: #58b68a !important;
-  color: white;
+  color: white !important;
 }
 
 /* Responsive design */

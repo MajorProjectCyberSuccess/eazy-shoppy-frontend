@@ -17,12 +17,12 @@ const TopPro = (props) => {
         <h3>{props.title}</h3>
         <div className="items d-flex align-items-center">
           <div className="img">
-            <Link to="">
+            <Link to="/product/details">
               <img src={TopProduct3} className="w-100" />
             </Link>
           </div>
           <div className="info px-3">
-            <Link to="">
+            <Link to="/product/details">
               <h4>
                 {selectedItem.length > 40
                   ? selectedItem.substr(0, 40) + "..."

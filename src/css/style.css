@@ -1,8 +1,13 @@
 .bg-g {
-  background: #3bb77e;
+  background: #3bb77e !important;
 }
+
+.text-org {
+  color: #fdc040 !important;
+}
+
 .text-g {
-  color: #3bb77e;
+  color: #3bb77e !important;
 }
 
 .hd {
@@ -13,4 +18,8 @@
 
 .transition {
   transition: all 0.3s ease-in-out;
+}
+
+.ml-auto {
+  margin-left: auto;
 }

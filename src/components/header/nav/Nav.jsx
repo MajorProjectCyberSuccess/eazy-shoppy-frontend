@@ -224,12 +224,12 @@ const Nav = () => {
                       </li>
                       <li>
                         <button>
-                          <Link to="/about">Privacy Policy</Link>
+                          <Link to="/notfound">Privacy Policy</Link>
                         </button>
                       </li>
                       <li>
                         <button>
-                          <Link to="/about">Terms of Service</Link>
+                          <Link to="/notfound">Terms of Service</Link>
                         </button>
                       </li>
                     </ul>

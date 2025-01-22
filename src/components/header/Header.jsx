@@ -44,7 +44,7 @@ const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       if (!headerRef.current) return;
-      if (window.pageYOffset > 100) {
+      if (window.pageYOffset > 200) {
         headerRef.current.classList.add("fixed");
       } else {
         headerRef.current.classList.remove("fixed");

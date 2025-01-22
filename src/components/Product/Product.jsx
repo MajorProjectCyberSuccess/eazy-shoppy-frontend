@@ -17,40 +17,42 @@ const Product = (props) => {
       {props.tag !== null && props.tag !== undefined && (
         <span className={`badge ${props.tag}`}>{props.tag}</span>
       )}
-      <Link>
-        <div className="imgWrapper">
-          <img src={Img1} className="w-100 transition" />
-          <div className="overlay transition">
-            <ul className="list list-inline mb-0">
-              <li className="list-inline-item">
-                <Tooltip title="Wishlist" placement="top-start">
-                  <Link>
-                    <FaRegHeart size={18} />
-                  </Link>
-                </Tooltip>
-              </li>
-              <li className="list-inline-item">
-                <Tooltip title="Compere" placement="top">
-                  <Link>
-                    <MdCompareArrows size={18} />
-                  </Link>
-                </Tooltip>
-              </li>
-              <li className="list-inline-item">
-                <Tooltip title="See" placement="top-end">
-                  <Link>
-                    <GrView size={18} />
-                  </Link>
-                </Tooltip>
-              </li>
-            </ul>
-          </div>
+
+      <div className="imgWrapper">
+        <img src={Img1} className="w-100 transition" />
+        <div className="overlay transition">
+          <ul className="list list-inline mb-0">
+            <li className="list-inline-item">
+              <Tooltip title="Wishlist" placement="top-start">
+                <Link to="">
+                  <FaRegHeart size={18} />
+                </Link>
+              </Tooltip>
+            </li>
+            <li className="list-inline-item">
+              <Tooltip title="Compere" placement="top">
+                <Link to="">
+                  <MdCompareArrows size={18} />
+                </Link>
+              </Tooltip>
+            </li>
+            <li className="list-inline-item">
+              <Tooltip title="See" placement="top-end">
+                <Link to="/product/details">
+                  <GrView size={18} />
+                </Link>
+              </Tooltip>
+            </li>
+          </ul>
         </div>
-      </Link>
+      </div>
+
       <div className="info">
         <span className="d-block catName">Snack</span>
         <h4 className="title">
-          <Link>Haldirams Namkeen - Aloo Bhujia, 200G</Link>
+          <Link to="/product/details">
+            Haldirams Namkeen - Aloo Bhujia, 200G
+          </Link>
         </h4>
         <Stack spacing={1}>
           <Rating
