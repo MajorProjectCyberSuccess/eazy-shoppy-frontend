@@ -100,10 +100,10 @@ const ProductDetail = () => {
           <div className="container-fluid">
             <ul className="breadcrumb">
               <li>
-                <Link>Home</Link>
+                <Link to="/">Home</Link>
               </li>
               <li>
-                <Link>Product</Link>
+                <Link to="/listing">Product</Link>
               </li>
               <li>Dhawak Gujrati Mini Bhakarwadi</li>
             </ul>

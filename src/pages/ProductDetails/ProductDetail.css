@@ -9,42 +9,6 @@
   margin: 30px;
 }
 
-/* Style the list */
-.breadcrumbWrapper {
-  width: 100%;
-  height: auto;
-  padding: 12px 0px !important;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.breadcrumbWrapper ul.breadcrumb {
-  padding: 10px 16px;
-  list-style: none;
-  margin-bottom: 0px;
-}
-
-.breadcrumbWrapper ul.breadcrumb li {
-  display: inline;
-  font-size: 16px;
-}
-
-/* Add a slash symbol (/) before/behind each list item */
-.breadcrumbWrapper ul.breadcrumb li + li:before {
-  padding: 8px;
-  color: black;
-  content: "/\00a0";
-}
-
-.breadcrumbWrapper ul.breadcrumb li a {
-  color: #0275d8;
-  text-decoration: none;
-}
-
-.breadcrumbWrapper ul.breadcrumb li a:hover {
-  color: #3bb77e;
-  text-decoration: underline;
-}
-
 .ml-2 {
   margin-left: 10px;
 }
@@ -255,7 +219,7 @@
 
 /* Firefox */
 .addCartSection .counterSec input[type="number"] {
-  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 .addCartSection .counterSec .arr {

@@ -105,6 +105,11 @@ header .headerTabs li span {
   cursor: pointer;
 }
 
+header .headerTabs li span a {
+  color: #000;
+  text-decoration: none;
+}
+
 header .headerTabs li span .icon {
   margin-right: 5px;
   transform: translateY(-2px);
@@ -118,8 +123,8 @@ header .headerTabs li span .badge {
   font-weight: 500;
   font-size: 11px;
   position: absolute;
-  top: -9px;
-  left: 8px;
+  top: -11px;
+  left: 11px;
 }
 
 header .headerTabs li .dropdownmenu {

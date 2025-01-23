@@ -15,6 +15,7 @@ import { CiLogout } from "react-icons/ci";
 import Select from "../selectDrop/Select";
 import Nav from "./nav/Nav";
 import Logo from "./images/EazyShoppy.png";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isOpenDropDown, setIsOpenDropDown] = useState(false);
@@ -90,23 +91,29 @@ const Header = () => {
                 <ul className="list list-inline mb-0 headerTabs">
                   <li className="list-inline-item">
                     <span>
-                      <RiLoopLeftLine className="icon" size={21} />
-                      <span className="badge rounded-circle">3</span>
-                      Compare
+                      <Link to={"/shop/compare"}>
+                        <RiLoopLeftLine className="icon" size={21} />
+                        <span className="badge rounded-circle">3</span>
+                        Compare
+                      </Link>
                     </span>
                   </li>
                   <li className="list-inline-item">
                     <span>
-                      <FaRegHeart className="icon" size={21} />
-                      <span className="badge rounded-circle">9+</span>
-                      Wishlist
+                      <Link to={"/shop/wishlist"}>
+                        <FaRegHeart className="icon" size={21} />
+                        <span className="badge rounded-circle">9+</span>
+                        Wishlist
+                      </Link>
                     </span>
                   </li>
                   <li className="list-inline-item">
                     <span>
-                      <FiShoppingCart className="icon" size={21} />
-                      <span className="badge rounded-circle">3</span>
-                      Cart
+                      <Link to="/shop/cart">
+                        <FiShoppingCart className="icon" size={21} />
+                        <span className="badge rounded-circle">3</span>
+                        Cart
+                      </Link>
                     </span>
                   </li>
 
