@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 
 import "./ProductDetail.css";
-import bhakar1 from "./images/bhakar1.jpg";
+// import bhakar1 from "./images/bhakar1.jpg";
 import bhakar2 from "./images/bhakar2.jpg";
 import bhakar3 from "./images/bhakar3.jpg";
 import bhakar4 from "./images/bhakar4.jpg";
-// import bhakar5 from "./images/bhakar5.jpg";
+import bhakar5 from "./images/bhakar5.jpg";
 
 import { Link } from "react-router-dom";
 import { IoIosArrowUp } from "react-icons/io";
@@ -21,28 +21,40 @@ import Rating from "@mui/material/Rating";
 import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 import Product from "../../components/Product/Product";
+import { CartContext } from "../AddCartPage/CartContext";
 
 const ProductDetail = () => {
-  const images = [
-    {
-      src: bhakar1,
-      zoomSrc: bhakar1,
-    },
-    {
-      src: bhakar2,
-      zoomSrc: bhakar2,
-    },
-    {
-      src: bhakar3,
-      zoomSrc: bhakar3,
-    },
-    {
-      src: bhakar4,
-      zoomSrc: bhakar4,
-    },
-  ];
+  const { addToCart } = useContext(CartContext);
 
-  const [selectedImage, setSelectedImage] = useState(images[0]);
+  // Static product data array
+  const productData = {
+    id: 1,
+    title:
+      "Dhawak Gujrati Mini Bhakarwadi 500 gms (Crunchy and Tasty) Jar Pack",
+    brand: "EazyShoppy",
+    rating: 3.5,
+    reviews: 32,
+    price: 219,
+    originalPrice: 599,
+    discount: "63% off",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni sed eum exercitationem! Iusto soluta totam sunt repellat nam numquam porro perspiciatis odio obcaecati deleniti ipsa quis, hic, minima dolorem. A.",
+    sizes: ["50g", "60g", "80g", "100g", "150g"],
+    images: [
+      {
+        src: "https://www.jiomart.com/images/product/original/rviklciklo/jagdish-farshan-bhakharwadi-250-gm-pack-of-2-product-images-orviklciklo-p603850635-0-202308130006.jpg?im=Resize=(360,360)",
+        zoomSrc:
+          "https://www.jiomart.com/images/product/original/rviklciklo/jagdish-farshan-bhakharwadi-250-gm-pack-of-2-product-images-orviklciklo-p603850635-0-202308130006.jpg?im=Resize=(360,360)",
+      },
+      { src: bhakar2, zoomSrc: bhakar2 },
+      { src: bhakar3, zoomSrc: bhakar3 },
+      { src: bhakar4, zoomSrc: bhakar4 },
+      { src: bhakar5, zoomSrc: bhakar5 },
+    ],
+  };
+
+  // State hooks
+  const [selectedImage, setSelectedImage] = useState(productData.images[0]);
   const [activeSize, setActiveSize] = useState(0);
   const [inputValue, setInputValue] = useState(1);
   const [liked, setLiked] = useState(false);
@@ -57,6 +69,7 @@ const ProductDetail = () => {
     arrows: true,
   };
 
+  //review form
   const [reviews, setReviews] = useState([
     {
       id: 1,
@@ -74,23 +87,73 @@ const ProductDetail = () => {
     comment: "",
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newReview = {
-      id: reviews.length + 1,
-      name: formData.name,
-      date: new Date().toLocaleString(),
-      rating: formData.rating,
-      comment: formData.comment,
-    };
+  // Load reviews from localStorage on component mount
+  useEffect(() => {
+    const savedReviews = localStorage.getItem("customerReviews");
+    if (savedReviews) {
+      console.log(
+        "Loaded reviews from localStorage:",
+        JSON.parse(savedReviews)
+      );
+      setReviews(JSON.parse(savedReviews));
+    }
+  }, []);
 
-    setReviews([newReview, ...reviews]); // Add the new review to the top
-    setFormData({ name: "", rating: 0, comment: "" }); // Reset the form
-  };
+  useEffect(() => {
+    console.log("Saving reviews to localStorage:", reviews);
+    localStorage.setItem("customerReviews", JSON.stringify(reviews));
+  }, [reviews]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Form submitted:", formData);
+
+    if (!formData.name || !formData.rating || !formData.comment) {
+      console.error("Form validation failed");
+      return;
+    }
+
+    const newReview = {
+      id: Date.now(),
+      name: formData.name,
+      rating: formData.rating,
+      comment: formData.comment,
+      date: new Date().toLocaleDateString(),
+    };
+
+    console.log("Adding new review:", newReview);
+    setReviews((prev) => [newReview, ...prev]);
+    setFormData({ name: "", rating: 0, comment: "" });
+  };
+
+  // add to cart
+  const handleAddToCart = () => {
+    const cartProducts = {
+      id: productData.id,
+      name: productData.title,
+      price: productData.price,
+      image: productData.images[0].src,
+      quantity: inputValue,
+    };
+    addToCart(cartProducts);
+  };
+
+  const product = {
+    image: bhakar5,
+    category: "Snacks",
+    title: "Haldirams Namkeen - Aloo Bhujia, 200G",
+    rating: 4.5,
+    brand: "EazyShoppy",
+    price: 255,
+    oldPrice: 399,
+    tag: "hot",
+    productLink: "/shop/product/details",
+    onAddToCart: handleAddToCart,
   };
 
   return (
@@ -103,7 +166,7 @@ const ProductDetail = () => {
                 <Link to="/">Home</Link>
               </li>
               <li>
-                <Link to="/listing">Product</Link>
+                <Link to="/shop">Product</Link>
               </li>
               <li>Dhawak Gujrati Mini Bhakarwadi</li>
             </ul>
@@ -111,7 +174,7 @@ const ProductDetail = () => {
         </div>
         <div className="container">
           <div className="row">
-            {/* product Zoom Start */}
+            {/* Product Zoom Section start */}
             <div className="col-md-5 part1">
               <div className="productZoom">
                 <InnerImageZoom
@@ -122,7 +185,7 @@ const ProductDetail = () => {
                 />
               </div>
               <div className="thumbnail-section d-flex justify-content-center gap-3">
-                {images.map((image, index) => (
+                {productData.images.map((image, index) => (
                   <div
                     key={index}
                     className={`thumbnail ${
@@ -139,91 +202,61 @@ const ProductDetail = () => {
                 ))}
               </div>
             </div>
-            {/* product Zoom end */}
+            {/* Product Zoom Section start */}
 
-            {/* product Info end */}
+            {/* Product Info Section start */}
             <div className="col-md-7 part2 productInfo mb-0">
-              <h1>
-                Dhawak Gujrati Mini Bhakarwadi 500 gms (Crunchy and Tasty) Jar
-                Pack
-              </h1>
+              <h1>{productData.title}</h1>
               <span className="brand d-block text-g">
-                by <Link className="text-g">EazyShoppy</Link>
+                by <Link className="text-g">{productData.brand}</Link>
               </span>
               <div className="d-flex align-items-center">
                 <Stack spacing={1}>
                   <Rating
                     className="rating"
                     name="half-rating-read"
-                    defaultValue={3.5}
+                    defaultValue={productData.rating}
                     precision={0.5}
                     readOnly
                   />
                 </Stack>
-                <span>&nbsp; (32 reviews)</span>
+                <span>&nbsp; ({productData.reviews} reviews)</span>
               </div>
-              <div className="priceSec d-flex align-items center mb-3">
-                <span className="text-g priceLarge">₹219</span>
+              <div className="priceSec d-flex align-items-center mb-3">
+                <span className="text-g priceLarge">₹{productData.price}</span>
                 <div className="ml-2 d-flex flex-column">
-                  <span className="text-org">63% off</span>
-                  <span className="olPrice">₹599</span>
+                  <span className="text-org">{productData.discount}</span>
+                  <span className="olPrice">₹{productData.originalPrice}</span>
                 </div>
               </div>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni
-                sed eum exercitationem! Iusto soluta totam sunt repellat nam
-                numquam porro perspiciatis odio obcaecati deleniti ipsa quis,
-                hic, minima dolorem. A.
-              </p>
+              <p>{productData.description}</p>
               <div className="productSize d-flex align-items-center">
                 <span>Size / Weight:</span>
                 <ul className="list list-inline mb-0">
-                  <li className="list-inline-item">
-                    <a
-                      className={`tag ${activeSize === 0 ? "active" : ""}`}
-                      onClick={() => setActiveSize(0)}
-                    >
-                      50g
-                    </a>
-                  </li>
-                  <li className="list-inline-item">
-                    <a
-                      className={`tag ${activeSize === 1 ? "active" : ""}`}
-                      onClick={() => setActiveSize(1)}
-                    >
-                      60g
-                    </a>
-                  </li>
-                  <li className="list-inline-item">
-                    <a
-                      className={`tag ${activeSize === 2 ? "active" : ""}`}
-                      onClick={() => setActiveSize(2)}
-                    >
-                      80g
-                    </a>
-                  </li>
-                  <li className="list-inline-item">
-                    <a
-                      className={`tag ${activeSize === 3 ? "active" : ""}`}
-                      onClick={() => setActiveSize(3)}
-                    >
-                      100g
-                    </a>
-                  </li>
-                  <li className="list-inline-item">
-                    <a
-                      className={`tag ${activeSize === 4 ? "active" : ""}`}
-                      onClick={() => setActiveSize(4)}
-                    >
-                      150g
-                    </a>
-                  </li>
+                  {productData.sizes.map((size, index) => (
+                    <li className="list-inline-item" key={index}>
+                      <a
+                        className={`tag ${
+                          activeSize === index ? "active" : ""
+                        }`}
+                        onClick={() => setActiveSize(index)}
+                      >
+                        {size}
+                      </a>
+                    </li>
+                  ))}
                 </ul>
               </div>
 
               <div className="addCartSection pt-3 pb-4 d-flex align-items-center">
                 <div className="counterSec">
-                  <input type="number" value={inputValue} />
+                  <input
+                    type="number"
+                    value={inputValue}
+                    onChange={(e) =>
+                      setInputValue(parseInt(e.target.value) || 1)
+                    }
+                  />
                   <span
                     className="arr plus"
                     onClick={() => setInputValue(inputValue + 1)}
@@ -239,7 +272,8 @@ const ProductDetail = () => {
                     <IoIosArrowDown />
                   </span>
                 </div>
-                <Button className="bt">
+
+                <Button className="bt" onClick={handleAddToCart}>
                   <FaCartShopping />
                   &nbsp; Add to Cart
                 </Button>
@@ -252,7 +286,7 @@ const ProductDetail = () => {
                 </button>
               </div>
             </div>
-            {/* product Info end */}
+            {/* Product Info Section end */}
           </div>
           <div className="card mt-5 p-5 detailsPageTabs">
             <div className="customTabs">
@@ -425,7 +459,6 @@ const ProductDetail = () => {
                       <br />
                       <br />
                       <br />
-
                       <div>
                         <form onSubmit={handleSubmit} className="reviewForm">
                           <div className="mb-3">
@@ -490,34 +523,34 @@ const ProductDetail = () => {
             <hr />
             <Slider {...related} className="prodSlider">
               <div className="item">
-                <Product tag="sale" />
+                <Product product={product} />
               </div>
               <div className="item">
-                <Product tag="hot" />
+                <Product product={product} />
               </div>
               <div className="item">
-                <Product tag="new" />
+                <Product product={product} />
               </div>
               <div className="item">
-                <Product />
+                <Product product={product} />
               </div>
               <div className="item">
-                <Product tag="best" />
+                <Product product={product} />
               </div>
               <div className="item">
-                <Product />
+                <Product product={product} />
               </div>
               <div className="item">
-                <Product tag="new" />
+                <Product product={product} />
               </div>
               <div className="item">
-                <Product tag="best" />
+                <Product product={product} />
               </div>
               <div className="item">
-                <Product tag="sale" />
+                <Product product={product} />
               </div>
               <div className="item">
-                <Product />
+                <Product product={product} />
               </div>
             </Slider>
           </div>

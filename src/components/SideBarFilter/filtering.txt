@@ -1,14 +1,12 @@
 import "./SideFilter.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { TbFridge } from "react-icons/tb";
-import {
-  GiScaleMail,
-  GiConverseShoe,
-  GiHeartNecklace,
-  GiSchoolBag,
-} from "react-icons/gi";
+import { GiScaleMail } from "react-icons/gi";
 import { MdPhonelink } from "react-icons/md";
+import { GiConverseShoe } from "react-icons/gi";
+import { GiHeartNecklace } from "react-icons/gi";
+import { GiSchoolBag } from "react-icons/gi";
 import { TbMoodKidFilled } from "react-icons/tb";
 import { FaKitchenSet } from "react-icons/fa6";
 import { LiaFilterSolid } from "react-icons/lia";
@@ -91,27 +89,7 @@ function valuetext(value) {
 }
 
 const SideBarFilter = () => {
-  const [categories, setCategories] = useState([]);
   const [value, setValue] = useState([0, 1000]);
-
-  useEffect(() => {
-    // Simulate API call
-    const fetchCategories = () => {
-      const data = [
-        { icon: <TbFridge size={18} />, cat: "Food", count: 30 },
-        { icon: <GiScaleMail size={18} />, cat: "Clothes", count: 22 },
-        { icon: <MdPhonelink size={18} />, cat: "Electronics", count: 28 },
-        { icon: <GiConverseShoe size={18} />, cat: "Shoes", count: 42 },
-        { icon: <GiHeartNecklace size={18} />, cat: "Jewelry", count: 56 },
-        { icon: <GiSchoolBag size={18} />, cat: "Bag", count: 20 },
-        { icon: <TbMoodKidFilled size={18} />, cat: "Kids", count: 20 },
-        { icon: <FaKitchenSet size={18} />, cat: "Home & Kitchen", count: 20 },
-      ];
-      setCategories(data);
-    };
-
-    fetchCategories();
-  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -123,7 +101,48 @@ const SideBarFilter = () => {
         <div className="card border-0 shadow">
           <h3>Category</h3>
           <div className="catList cursor">
-            {categories.map((item, index) => (
+            {[
+              {
+                icon: <TbFridge size={18} />,
+                cat: "Food",
+                count: 30,
+              },
+              {
+                icon: <GiScaleMail size={18} />,
+                cat: "Clothes",
+                count: 22,
+              },
+              {
+                icon: <MdPhonelink size={18} />,
+                cat: "Electronics",
+                count: 28,
+              },
+              {
+                icon: <GiConverseShoe size={18} />,
+                cat: "Shoes",
+                count: 42,
+              },
+              {
+                icon: <GiHeartNecklace size={18} />,
+                cat: "Jwellary",
+                count: 56,
+              },
+              {
+                icon: <GiSchoolBag size={18} />,
+                cat: "Bag",
+                count: 20,
+              },
+              {
+                icon: <TbMoodKidFilled size={18} />,
+                cat: "Kids",
+                count: 20,
+              },
+              {
+                icon: <FaKitchenSet size={18} />,
+                cat: "Home & kitchen",
+                count: 20,
+              },
+            ].map((item, index) => (
               <div className="catItem d-flex align-items-center" key={index}>
                 <span className="img">{item.icon}</span>
                 <h4 className="mb-0 mx-3 cat">{item.cat}</h4>

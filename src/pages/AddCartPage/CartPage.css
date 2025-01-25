@@ -41,6 +41,7 @@
 
 .cart-page .cart-table td p {
   font-size: 16px;
+  padding-left: 20px !important;
 }
 
 .cart-page .cart-table button {
@@ -93,6 +94,7 @@
 .cart-page .card {
   background: #dddddd51;
   border-radius: 10px;
+  max-height: 300px;
 }
 
 .cart-page .cart-summary {

@@ -92,7 +92,7 @@ header .countryWrapper .openSelect {
 }
 
 header .headerTabs {
-  padding-left: 20px;
+  padding: 0px 30px;
 }
 
 header .headerTabs li {
@@ -130,7 +130,7 @@ header .headerTabs li span .badge {
 header .headerTabs li .dropdownmenu {
   position: absolute;
   top: 135%;
-  right: -10px;
+  right: -20px;
   padding: 0px;
   width: 155px;
   height: auto;

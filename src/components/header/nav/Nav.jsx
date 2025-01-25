@@ -11,16 +11,16 @@ const Nav = () => {
       <div className="container-fluid">
         <div className="row position-relative">
           {/* DropDown menu start  */}
-          <div className="col-sm-2 part1 d-flex align-items-center">
+          <div className="col-sm-3 part1 d-flex align-items-center">
             <button className="bg-g text-white catTab">
-              <BiCategoryAlt size={22} /> Browse All Categories
-              <RiArrowDownSLine />
+              <BiCategoryAlt size={25} /> Shopping is cheaper than therapy...
+              and way more fun!
             </button>
           </div>
           {/* DropDown menu end  */}
 
           {/* Nav menu start  */}
-          <div className="col-sm-8 part2 position-static">
+          <div className="col-sm-7 part2 position-static">
             <nav>
               <ul className="list list-inline">
                 <li className="list-inline-item">
@@ -30,7 +30,7 @@ const Nav = () => {
                 </li>
                 <li className="list-inline-item">
                   <button className="navTabs">
-                    <Link to="/listing">All Products</Link>
+                    <Link to="/shop">All Products</Link>
                   </button>
                 </li>
                 <li className="list-inline-item">
@@ -42,42 +42,42 @@ const Nav = () => {
                     <ul>
                       <li>
                         <button>
-                          <Link to="/listing/clothing">Clothing</Link>
+                          <Link to="/shop/clothing">Clothing</Link>
                         </button>
                       </li>
                       <li>
                         <button>
-                          <Link to="/listing/electronics">Electronics</Link>
+                          <Link to="/shop/electronics">Electronics</Link>
                         </button>
                       </li>
                       <li>
                         <button>
-                          <Link to="/listing/beauty">Beauty & wellness</Link>
+                          <Link to="/shop/beauty">Beauty & wellness</Link>
                         </button>
                       </li>
                       <li>
                         <button>
-                          <Link to="/listing/jewellery">Jewellery</Link>
+                          <Link to="/shop/jewellery">Jewellery</Link>
                         </button>
                       </li>
                       <li>
                         <button>
-                          <Link to="/listing/kids">Kids</Link>
+                          <Link to="/shop/kids">Kids</Link>
                         </button>
                       </li>
                       <li>
                         <button>
-                          <Link to="/listing/shoes">Shoes</Link>
+                          <Link to="/shop/shoes">Shoes</Link>
                         </button>
                       </li>
                       <li>
                         <button>
-                          <Link to="/listing/kitchen">Home & Kitchen</Link>
+                          <Link to="/shop/kitchen">Home & Kitchen</Link>
                         </button>
                       </li>
                       <li>
                         <button>
-                          <Link to="/listing/bags">Bags</Link>
+                          <Link to="/shop/bags">Bags</Link>
                         </button>
                       </li>
                     </ul>
@@ -194,7 +194,7 @@ const Nav = () => {
                     <ul>
                       <li>
                         <button>
-                          <Link to="/about">About Us</Link>
+                          <Link to="/about/eazy-shoppy">About Us</Link>
                         </button>
                       </li>
                       <li>
@@ -204,7 +204,7 @@ const Nav = () => {
                       </li>
                       <li>
                         <button>
-                          <Link to="/about">My Account</Link>
+                          <Link to="/about/eazy-shoppy">My Account</Link>
                         </button>
                       </li>
                       <li>

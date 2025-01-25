@@ -8,10 +8,11 @@
 
 .nav .catTab {
   border: none;
-  border-radius: 5px;
+  border-radius: 0px;
   padding: 10px 20px;
   font-size: 15px;
   font-weight: 500;
+  cursor: grab;
   text-transform: capitalize;
 }
 

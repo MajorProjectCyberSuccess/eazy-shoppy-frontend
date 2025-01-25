@@ -1,45 +1,25 @@
-// import Imgb1 from "./images/imgb1.jpg";
-import { useContext } from "react";
-
 import "./Product.css";
 import PropTypes from "prop-types";
+import Img1 from "./images/img1.jpg";
+// import Imgb1 from "./images/imgb1.jpg";
 import Stack from "@mui/material/Stack";
 import Rating from "@mui/material/Rating";
 import Tooltip from "@mui/material/Tooltip";
 import { Link } from "react-router-dom";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import { GrView } from "react-icons/gr";
+import { MdCompareArrows } from "react-icons/md";
 import { FaRegHeart } from "react-icons/fa";
 
-import { CartContext } from "../../pages/AddCartPage/CartContext";
-
-const Product = ({ product }) => {
-  const { addToCart } = useContext(CartContext);
-  const handleAddToCart = () => {
-    const productToAdd = {
-      id: product.id,
-      name: product.title,
-      price: product.price,
-      quantity: 1,
-      image: product.image,
-    };
-    // console.log("productToAdd", productToAdd);
-    addToCart(productToAdd);
-    alert(`${product.title} added to cart!`);
-  };
-
+const Product = (props) => {
   return (
     <div className="productContainer transition">
-      {product.tag && (
-        <span className={`badge ${product.tag}`}>{product.tag}</span>
+      {props.tag !== null && props.tag !== undefined && (
+        <span className={`badge ${props.tag}`}>{props.tag}</span>
       )}
 
       <div className="imgWrapper">
-        <img
-          src={product.image}
-          alt={product.title}
-          className="w-100 transition"
-        />
+        <img src={Img1} className="w-100 transition" />
         <div className="overlay transition">
           <ul className="list list-inline mb-0">
             <li className="list-inline-item">
@@ -49,10 +29,16 @@ const Product = ({ product }) => {
                 </Link>
               </Tooltip>
             </li>
-
+            <li className="list-inline-item">
+              <Tooltip title="Compere" placement="top">
+                <Link to="">
+                  <MdCompareArrows size={18} />
+                </Link>
+              </Tooltip>
+            </li>
             <li className="list-inline-item">
               <Tooltip title="See" placement="top-end">
-                <Link to={product.productLink}>
+                <Link to="/shop/product/details">
                   <GrView size={18} />
                 </Link>
               </Tooltip>
@@ -62,32 +48,30 @@ const Product = ({ product }) => {
       </div>
 
       <div className="info">
-        <span className="d-block catName">{product.category}</span>
+        <span className="d-block catName">Snack</span>
         <h4 className="title">
-          <Link to={product.productLink}>{product.title}</Link>
+          <Link to="/shop/product/details">
+            Haldirams Namkeen - Aloo Bhujia, 200G
+          </Link>
         </h4>
         <Stack spacing={1}>
           <Rating
             className="rating"
             name="half-rating-read"
-            defaultValue={product.rating}
+            defaultValue={3.5}
             precision={0.5}
             readOnly
           />
         </Stack>
         <span className="brand d-block text-g">
-          by <Link className="text-g">{product.brand}</Link>
+          by <Link className="text-g">EazyShoppy</Link>
         </span>
         <div className="d-flex align-item-center mt-3">
           <div className="d-flex align-item-center priceWrap">
-            <span className="price text-g font-weight-bold">
-              ${product.price}
-            </span>
-            {product.oldPrice && (
-              <span className="oldPrice">${product.oldPrice}</span>
-            )}
+            <span className="price text-g font-weight-bold">$2.5</span>
+            <span className="oldPrice">$3</span>
           </div>
-          <button className="text-g transition" onClick={handleAddToCart}>
+          <button className="text-g transition">
             <PiShoppingCartSimpleBold
               size={15}
               style={{ transform: "translateY(-2px)" }}
@@ -101,19 +85,7 @@ const Product = ({ product }) => {
 };
 
 Product.propTypes = {
-  product: PropTypes.shape({
-    id: PropTypes.number,
-    tag: PropTypes.string,
-    image: PropTypes.string.isRequired,
-    category: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    rating: PropTypes.number.isRequired,
-    brand: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    oldPrice: PropTypes.number,
-    productLink: PropTypes.string.isRequired,
-  }).isRequired,
-  onAddToCart: PropTypes.func,
+  tag: PropTypes.string,
 };
 
 export default Product;

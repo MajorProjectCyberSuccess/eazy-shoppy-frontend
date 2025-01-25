@@ -4,7 +4,6 @@ import axios from "axios";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import { FiShoppingCart } from "react-icons/fi";
 import { FaRegHeart } from "react-icons/fa";
-import { RiLoopLeftLine } from "react-icons/ri";
 import { IoIosSearch } from "react-icons/io";
 import { MdOutlineLocationOn } from "react-icons/md";
 import { CiUser } from "react-icons/ci";
@@ -80,24 +79,15 @@ const Header = () => {
             {/* header search end hear */}
 
             <div className="col-sm-5 d-flex align-items-center">
+              <div className="countryWrapper">
+                <Select
+                  data={countryList}
+                  placeholder={"Your Location"}
+                  icon={<MdOutlineLocationOn style={{ opacity: "0.6" }} />}
+                />
+              </div>
               <div className="ml-auto d-flex align-items-center">
-                <div className="countryWrapper">
-                  <Select
-                    data={countryList}
-                    placeholder={"Your Location"}
-                    icon={<MdOutlineLocationOn style={{ opacity: "0.6" }} />}
-                  />
-                </div>
                 <ul className="list list-inline mb-0 headerTabs">
-                  <li className="list-inline-item">
-                    <span>
-                      <Link to={"/shop/compare"}>
-                        <RiLoopLeftLine className="icon" size={21} />
-                        <span className="badge rounded-circle">3</span>
-                        Compare
-                      </Link>
-                    </span>
-                  </li>
                   <li className="list-inline-item">
                     <span>
                       <Link to={"/shop/wishlist"}>

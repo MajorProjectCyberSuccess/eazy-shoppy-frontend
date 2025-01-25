@@ -1,53 +1,56 @@
 import "./CartPage.css";
-import { useState } from "react";
+import { useContext } from "react";
+
+import { CartContext } from "./CartContext";
 
 import { Link } from "react-router-dom";
 import { AiFillDelete } from "react-icons/ai";
 
-import Cart1 from "./images/cart1.jpg";
-import Cart2 from "./images/cart2.jpg";
-
 const CartPage = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Men White & Navy Blue Colorblocked Lightweight Com...",
-      price: 1500,
-      quantity: 1,
-      image: Cart1,
-    },
-    {
-      id: 2,
-      name: "VNEED Women Embroidered Rayon Kurta Pant Set | Kur...",
-      price: 450,
-      quantity: 1,
-      image: Cart2,
-    },
-  ]);
-
-  const handleQuantityChange = (id, action) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              quantity:
-                action === "increment"
-                  ? item.quantity + 1
-                  : Math.max(1, item.quantity - 1),
-            }
-          : item
-      )
-    );
-  };
-
-  const handleRemove = (id) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
-  };
+  const { cartItems, updateQuantity, removeFromCart } = useContext(CartContext);
 
   const calculateTotal = () =>
     cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  // const [cartItems, setCartItems] = useState([
+  //   {
+  //     id: 1,
+  //     name: "Men White & Navy Blue Colorblocked Lightweight Com...",
+  //     price: 1500,
+  //     quantity: 1,
+  //     image: Cart1,
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "VNEED Women Embroidered Rayon Kurta Pant Set | Kur...",
+  //     price: 450,
+  //     quantity: 1,
+  //     image: Cart2,
+  //   },
+  // ]);
 
+  // const handleQuantityChange = (id, action) => {
+  //   setCartItems((prevItems) =>
+  //     prevItems.map((item) =>
+  //       item.id === id
+  //         ? {
+  //             ...item,
+  //             quantity:
+  //               action === "increment"
+  //                 ? item.quantity + 1
+  //                 : Math.max(1, item.quantity - 1),
+  //           }
+  //         : item
+  //     )
+  //   );
+  // };
+
+  // const handleRemove = (id) => {
+  //   setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  // };
+
+  // const calculateTotal = () =>
+  //   cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  console.log(cartItems);
   return (
     <>
       <div className="breadcrumbWrapper">
@@ -82,35 +85,36 @@ const CartPage = () => {
                     <tr key={item.id}>
                       <td>
                         <div className="d-flex align-items-center">
-                          <img src={item.image} alt={item.name} />
-                          <p className="m-2 p-2">{item.name}</p>
+                          <img src={item.image} alt={item.image} />
+                          <p>
+                            {item.name.length > 40
+                              ? item.name.substr(0, 40) + "..."
+                              : item.name}
+                            {/* {item.name} */}
+                          </p>
                         </div>
                       </td>
-                      <td>Rs: {item.price}</td>
+                      <td>₹{item.price}</td>
                       <td>
                         <button
-                          onClick={() =>
-                            handleQuantityChange(item.id, "decrement")
-                          }
+                          onClick={() => updateQuantity(item.id, "decrement")}
                         >
                           -
                         </button>
                         {item.quantity}
                         <button
-                          onClick={() =>
-                            handleQuantityChange(item.id, "increment")
-                          }
+                          onClick={() => updateQuantity(item.id, "increment")}
                         >
                           +
                         </button>
                       </td>
-                      <td>Rs: {item.price * item.quantity}</td>
+                      <td>₹{(item.price * item.quantity).toFixed(2)}</td>
                       <td>
                         <button
-                          onClick={() => handleRemove(item.id)}
+                          onClick={() => removeFromCart(item.id)}
                           className="del"
                         >
-                          <AiFillDelete size={22} />
+                          <AiFillDelete />
                         </button>
                       </td>
                     </tr>
@@ -123,7 +127,9 @@ const CartPage = () => {
                 <div className="d-flex align-items-center mb-1">
                   <p>Subtotal </p>
                   <h3 className="ml-auto mb-0 fw-bold">
-                    <span className="text-g">₹{calculateTotal()}</span>
+                    <span className="text-g">
+                      ₹{calculateTotal().toFixed(2)}
+                    </span>
                   </h3>
                 </div>
                 <div className="d-flex align-items-center mb-1">
@@ -141,7 +147,9 @@ const CartPage = () => {
                 <div className="d-flex align-items-center mb-1">
                   <p>Total </p>
                   <h3 className="ml-auto mb-0 fw-bold">
-                    <span className="text-g">₹{calculateTotal()}</span>
+                    <span className="text-g">
+                      ₹{calculateTotal().toFixed(2)}
+                    </span>
                   </h3>
                 </div>
                 <button>Proceed To Checkout</button>

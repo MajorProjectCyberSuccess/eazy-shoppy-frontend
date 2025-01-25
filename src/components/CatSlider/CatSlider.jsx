@@ -1,20 +1,92 @@
 import "./CatSlider.css";
 import Slider from "react-slick";
-import cat2 from "../../assets/images/cat/cat2.png";
-// import cat3 from "../../assets/images/cat/cat3.png";
-// import cat4 from "../../assets/images/cat/cat4.png";
-// import cat5 from "../../assets/images/cat/cat5.png";
-// import cat6 from "../../assets/images/cat/cat6.png";
-// import cat7 from "../../assets/images/cat/cat7.png";
-// import cat8 from "../../assets/images/cat/cat8.png";
-// import cat9 from "../../assets/images/cat/cat9.png";
-
-// import cat11 from "../../assets/images/cat/cat11.png";
-// import cat12 from "../../assets/images/cat/cat12.png";
 import { useState } from "react";
+// import axios from "axios"; // For API calls
 
 const CatSlider = () => {
+  //setCategories()
+  const [categories] = useState([
+    {
+      id: 1,
+      name: "Cake & Milk",
+      imageUrl:
+        "https://api.spicezgold.com/download/file_1734525248057_gro.png",
+      itemCount: 26,
+    },
+    {
+      id: 2,
+      name: "Clothes",
+      imageUrl:
+        "https://api.spicezgold.com/download/file_1734525239704_foot.png",
+      itemCount: 40,
+    },
+    {
+      id: 3,
+      name: "Electronics",
+      imageUrl:
+        "https://api.spicezgold.com/download/file_1734525218436_ele.png",
+      itemCount: 15,
+    },
+    {
+      id: 4,
+      name: "Cake & Milk",
+      imageUrl:
+        "https://api.spicezgold.com/download/file_1734525248057_gro.png",
+      itemCount: 26,
+    },
+    {
+      id: 5,
+      name: "Clothes",
+      imageUrl:
+        "https://api.spicezgold.com/download/file_1734525239704_foot.png",
+      itemCount: 40,
+    },
+    {
+      id: 6,
+      name: "Electronics",
+      imageUrl:
+        "https://api.spicezgold.com/download/file_1734525218436_ele.png",
+      itemCount: 15,
+    },
+    {
+      id: 7,
+      name: "Cake & Milk",
+      imageUrl:
+        "https://api.spicezgold.com/download/file_1734525248057_gro.png",
+      itemCount: 26,
+    },
+    {
+      id: 8,
+      name: "Clothes",
+      imageUrl:
+        "https://api.spicezgold.com/download/file_1734525239704_foot.png",
+      itemCount: 40,
+    },
+    {
+      id: 9,
+      name: "Electronics",
+      imageUrl:
+        "https://api.spicezgold.com/download/file_1734525218436_ele.png",
+      itemCount: 15,
+    },
+    {
+      id: 10,
+      name: "Clothes",
+      imageUrl:
+        "https://api.spicezgold.com/download/file_1734525239704_foot.png",
+      itemCount: 40,
+    },
+    {
+      id: 11,
+      name: "Electronics",
+      imageUrl:
+        "https://api.spicezgold.com/download/file_1734525218436_ele.png",
+      itemCount: 15,
+    },
+  ]); // State to hold category data
+
   const [itemBg] = useState([
+    // Background color array for each category
     "#fffceb",
     "#ecffec",
     "#feefea",
@@ -35,102 +107,52 @@ const CatSlider = () => {
     "#ecffec",
   ]);
 
+  // Fetch categories dynamically from API
+  // useEffect(() => {
+  //   const fetchCategories = async () => {
+  //     try {
+  //       const response = await axios.get("/api/categories"); // Example endpoint
+  //       setCategories(response.data); // Set the fetched categories
+  //     } catch (error) {
+  //       console.error("Error fetching categories:", error);
+  //     }
+  //   };
+
+  //   fetchCategories();
+  // }, []);
+
   const settings = {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 10,
+    slidesToShow: window.innerWidth > 768 ? 8 : 2,
     slidesToScroll: 1,
     arrows: true,
   };
-  return (
-    <>
-      <div className="catSliderSection">
-        <div className="container-fluid">
-          <h2 className="hd mx-2">Featured Categories</h2>
-          <Slider {...settings} className="cat_slider_menu">
-            {itemBg.length !== 0 &&
-              itemBg.map((item, index) => {
-                return (
-                  <div className="item" key={index}>
-                    <div className="info" style={{ background: item }}>
-                      <img src={cat2} alt="cat1" />
-                      <h5>Cake & Milk</h5>
-                      <p>26 items</p>
-                    </div>
-                  </div>
-                );
-              })}
 
-            {/* <div className="item ">
-              <img src={cat3} alt="cat1" />
-              <h5>Cake & Milk</h5>
-              <p>26 items</p>
-            </div>
-            <div className="item ">
-              <img src={cat4} alt="cat1" />
-              <h5>Cake & Milk</h5>
-              <p>26 items</p>
-            </div>
-            <div className="item ">
-              <img src={cat5} alt="cat1" />
-              <h5>Cake & Milk</h5>
-              <p>26 items</p>
-            </div>
-            <div className="item ">
-              <img src={cat6} alt="cat1" />
-              <h5>Cake & Milk</h5>
-              <p>26 items</p>
-            </div>
-            <div className="item ">
-              <img src={cat7} alt="cat1" />
-              <h5>Cake & Milk</h5>
-              <p>26 items</p>
-            </div>
-            <div className="item ">
-              <img src={cat8} alt="cat1" />
-              <h5>Cake & Milk</h5>
-              <p>26 items</p>
-            </div>
-            <div className="item ">
-              <img src={cat9} alt="cat1" />
-              <h5>Cake & Milk</h5>
-              <p>26 items</p>
-            </div>
-            <div className="item ">
-              <img src={cat7} alt="cat1" />
-              <h5>Cake & Milk</h5>
-              <p>26 items</p>
-            </div>
-            <div className="item ">
-              <img src={cat11} alt="cat1" />
-              <h5>Cake & Milk</h5>
-              <p>26 items</p>
-            </div>
-            <div className="item ">
-              <img src={cat12} alt="cat1" />
-              <h5>Cake & Milk</h5>
-              <p>26 items</p>
-            </div>
-            <div className="item ">
-              <img src={cat2} alt="cat1" />
-              <h5>Cake & Milk</h5>
-              <p>26 items</p>
-            </div>
-            <div className="item ">
-              <img src={cat5} alt="cat1" />
-              <h5>Cake & Milk</h5>
-              <p>26 items</p>
-            </div>
-            <div className="item ">
-              <img src={cat12} alt="cat1" />
-              <h5>Cake & Milk</h5>
-              <p>26 items</p>
-            </div> */}
-          </Slider>
-        </div>
+  return (
+    <div className="catSliderSection">
+      <div className="container-fluid">
+        <h2 className="hd mx-2">Featured Categories</h2>
+        <Slider {...settings} className="cat_slider_menu">
+          {categories.length !== 0 &&
+            categories.map((category, index) => {
+              return (
+                <div className="item" key={index}>
+                  <div
+                    className="info"
+                    style={{ background: itemBg[index % itemBg.length] }}
+                  >
+                    <img src={category.imageUrl} alt={category.name} />
+                    <h5>{category.name}</h5>
+                    <p>{category.itemCount} items</p>
+                  </div>
+                </div>
+              );
+            })}
+        </Slider>
       </div>
-    </>
+    </div>
   );
 };
 
