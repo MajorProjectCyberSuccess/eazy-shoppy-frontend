@@ -1,7 +1,7 @@
 import "./CartPage.css";
 import { useContext } from "react";
 
-import { CartContext } from "./CartContext";
+import { CartContext } from "../../utility/CartContext";
 
 import { Link } from "react-router-dom";
 import { AiFillDelete } from "react-icons/ai";
@@ -81,15 +81,17 @@ const CartPage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {cartItems.map((item) => (
-                    <tr key={item.id}>
+                  {cartItems.map((item, index) => (
+                    <tr key={item.id || index}>
                       <td>
                         <div className="d-flex align-items-center">
                           <img src={item.image} alt={item.image} />
                           <p>
-                            {item.name.length > 40
-                              ? item.name.substr(0, 40) + "..."
-                              : item.name}
+                            {item && item.name
+                              ? item.name.length > 40
+                                ? item.name.substr(0, 40) + "..."
+                                : item.name
+                              : "No Name"}
                             {/* {item.name} */}
                           </p>
                         </div>
@@ -152,7 +154,9 @@ const CartPage = () => {
                     </span>
                   </h3>
                 </div>
-                <button>Proceed To Checkout</button>
+                <Link to={"/shop/cart/checkout"}>
+                  <button>Proceed To Checkout</button>
+                </Link>
               </div>
             </div>
           </div>

@@ -1,16 +1,51 @@
 import SideBarFilter from "../../components/SideBarFilter/SideBarFilter";
 import "./Listing.css";
 // import { Link } from "react-router-dom";
+
+// import { useParams } from "react-router-dom";
+
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import Banner1 from "./images/b1.jpg";
 import Banner2 from "./images/b2.jpg";
 import Product from "../../components/Product/Product";
 
 const Listing = () => {
+  // const { id } = useParams();
+  // const [category, setCategory] = useState(null);
+  // const [products, setProducts] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchCategoryAndProducts = async () => {
+  //     try {
+  //       // Fetch category details by ID
+  //       const categoryResponse = await axios.get(`http://localhost:8000/api/category/getCategoryById`, {
+  //         headers: {
+  //           id: id, // Pass the category ID in the request header
+  //         },
+  //       });
+
+  //       const categoryData = categoryResponse.data.data; // Assuming the API returns the category in the `data` field
+  //       setCategory(categoryData);
+
+  //       // Fetch products for the category
+  //       const productsResponse = await axios.get(`http://localhost:8000/api/products/category/${id}`);
+  //       setProducts(productsResponse.data);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+
+  //   fetchCategoryAndProducts();
+  // }, [id]);
+
+  // if (!category) {
+  //   return <div>Loading...</div>;
+  // }
+
   const breadcrumbItems = [
     { name: "Home", path: "/" },
     { name: "Products", path: "/shop" },
-    { name: "Food", path: "/shop/food" },
+    { name: "food", path: `/shop/food` },
   ];
 
   const products = [

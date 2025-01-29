@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
+import { CartContext } from "../../utility/CartContext";
+
 import "./header.css";
 import axios from "axios";
 import { MdOutlineAccountCircle } from "react-icons/md";
@@ -6,19 +8,38 @@ import { FiShoppingCart } from "react-icons/fi";
 import { FaRegHeart } from "react-icons/fa";
 import { IoIosSearch } from "react-icons/io";
 import { MdOutlineLocationOn } from "react-icons/md";
-import { CiUser } from "react-icons/ci";
-import { CiLocationOn } from "react-icons/ci";
-import { CiHeart } from "react-icons/ci";
-import { CiSettings } from "react-icons/ci";
-import { CiLogout } from "react-icons/ci";
+import {
+  CiUser,
+  CiLocationOn,
+  CiHeart,
+  CiSettings,
+  CiLogout,
+} from "react-icons/ci";
 import Select from "../selectDrop/Select";
 import Nav from "./nav/Nav";
 import Logo from "./images/EazyShoppy.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isOpenDropDown, setIsOpenDropDown] = useState(false);
   const headerRef = useRef(null);
+  const navigate = useNavigate();
+  const { wishlistItems, cartItems } = useContext(CartContext);
+
+  const handleOpenMenu = () => {
+    setIsOpenDropDown(!isOpenDropDown);
+  };
+
+  // Check if the user is logged in
+  const isLoggedIn = localStorage.getItem("sessionId") !== null;
+
+  // Handle logout
+  const handleLogout = () => {
+    setIsOpenDropDown(!isOpenDropDown);
+    localStorage.removeItem("sessionId"); // Clear the session
+    localStorage.removeItem("user"); // Clear the session
+    navigate("/login"); // Redirect to the SignIn page
+  };
 
   const countryList = [];
 
@@ -87,68 +108,113 @@ const Header = () => {
                 />
               </div>
               <div className="ml-auto d-flex align-items-center">
-                <ul className="list list-inline mb-0 headerTabs">
-                  <li className="list-inline-item">
-                    <span>
-                      <Link to={"/shop/wishlist"}>
-                        <FaRegHeart className="icon" size={21} />
-                        <span className="badge rounded-circle">9+</span>
-                        Wishlist
-                      </Link>
-                    </span>
-                  </li>
-                  <li className="list-inline-item">
-                    <span>
-                      <Link to="/shop/cart">
-                        <FiShoppingCart className="icon" size={21} />
-                        <span className="badge rounded-circle">3</span>
-                        Cart
-                      </Link>
-                    </span>
-                  </li>
+                {isLoggedIn ? (
+                  <>
+                    <ul className="list list-inline mb-0 headerTabs">
+                      <li className="list-inline-item">
+                        <span>
+                          <Link to={"/shop/wishlist"}>
+                            <FaRegHeart className="icon" size={21} />
+                            {wishlistItems.length > 0 && (
+                              <span className="badge rounded-circle">
+                                {wishlistItems.length > 9
+                                  ? "9+"
+                                  : wishlistItems.length}
+                              </span>
+                            )}
+                            Wishlist
+                          </Link>
+                        </span>
+                      </li>
+                      <li className="list-inline-item">
+                        <span>
+                          <Link to="/shop/cart">
+                            <FiShoppingCart className="icon" size={21} />
+                            {cartItems.length > 0 && (
+                              <span className="badge rounded-circle">
+                                {cartItems.length > 9 ? "9+" : cartItems.length}
+                              </span>
+                            )}
+                            Cart
+                          </Link>
+                        </span>
+                      </li>
 
-                  {/* DropDown for Account start*/}
-                  <li className="list-inline-item">
-                    <span onClick={() => setIsOpenDropDown(!isOpenDropDown)}>
-                      <MdOutlineAccountCircle
-                        className="icon profile"
-                        size={22}
-                      />
-                      Account
-                    </span>
-                    {isOpenDropDown !== false && (
-                      <ul className="dropdownmenu">
-                        <li>
-                          <button className="btn align-items-center">
-                            <CiUser />
-                            My Account
-                          </button>
-                        </li>
-                        <li>
-                          <button className="btn align-items-center">
-                            <CiLocationOn /> Order Tracking
-                          </button>
-                        </li>
-                        <li>
-                          <button className="btn align-items-center">
-                            <CiHeart /> My Wishlist
-                          </button>
-                        </li>
-                        <li>
-                          <button className="btn align-items-center">
-                            <CiSettings /> Setting
-                          </button>
-                        </li>
-                        <li>
-                          <button className="btn align-items-center">
-                            <CiLogout /> Sign Out
-                          </button>
-                        </li>
-                      </ul>
-                    )}
-                    {/* DropDown for Account end*/}
-                  </li>
-                </ul>
+                      {/* DropDown for Account start*/}
+                      <li className="list-inline-item">
+                        <span
+                          onClick={() => setIsOpenDropDown(!isOpenDropDown)}
+                        >
+                          <MdOutlineAccountCircle
+                            className="icon profile"
+                            size={22}
+                          />
+                          Account
+                        </span>
+                        {isOpenDropDown && (
+                          <ul className="dropdownmenu">
+                            <li>
+                              <button
+                                className="btn align-items-center"
+                                onClick={handleOpenMenu}
+                              >
+                                <CiUser />
+                                My Account
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                className="btn align-items-center"
+                                onClick={handleOpenMenu}
+                              >
+                                <CiLocationOn /> Order Tracking
+                              </button>
+                            </li>
+                            <li>
+                              <Link to={"/shop/wishlist"}>
+                                <button
+                                  className="btn align-items-center"
+                                  onClick={handleOpenMenu}
+                                >
+                                  <CiHeart /> My Wishlist
+                                </button>
+                              </Link>
+                            </li>
+                            <li>
+                              <button
+                                className="btn align-items-center"
+                                onClick={handleOpenMenu}
+                              >
+                                <CiSettings /> Setting
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                className="btn align-items-center"
+                                onClick={handleLogout}
+                              >
+                                <CiLogout /> Sign Out
+                              </button>
+                            </li>
+                          </ul>
+                        )}
+
+                        {/* DropDown for Account end*/}
+                      </li>
+                    </ul>
+                  </>
+                ) : (
+                  <button
+                    className="btn align-items-center bg-g"
+                    onClick={() => navigate("/login")}
+                  >
+                    <MdOutlineAccountCircle
+                      className="icon profile"
+                      size={22}
+                    />
+                    Sign In
+                  </button>
+                )}
               </div>
             </div>
           </div>

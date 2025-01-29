@@ -1,16 +1,7 @@
 import "./SideFilter.css";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
-import { TbFridge } from "react-icons/tb";
-import {
-  GiScaleMail,
-  GiConverseShoe,
-  GiHeartNecklace,
-  GiSchoolBag,
-} from "react-icons/gi";
-import { MdPhonelink } from "react-icons/md";
-import { TbMoodKidFilled } from "react-icons/tb";
-import { FaKitchenSet } from "react-icons/fa6";
 import { LiaFilterSolid } from "react-icons/lia";
 
 import Slider from "@mui/material/Slider";
@@ -95,19 +86,22 @@ const SideBarFilter = () => {
   const [value, setValue] = useState([0, 1000]);
 
   useEffect(() => {
-    // Simulate API call
-    const fetchCategories = () => {
-      const data = [
-        { icon: <TbFridge size={18} />, cat: "Food", count: 30 },
-        { icon: <GiScaleMail size={18} />, cat: "Clothes", count: 22 },
-        { icon: <MdPhonelink size={18} />, cat: "Electronics", count: 28 },
-        { icon: <GiConverseShoe size={18} />, cat: "Shoes", count: 42 },
-        { icon: <GiHeartNecklace size={18} />, cat: "Jewelry", count: 56 },
-        { icon: <GiSchoolBag size={18} />, cat: "Bag", count: 20 },
-        { icon: <TbMoodKidFilled size={18} />, cat: "Kids", count: 20 },
-        { icon: <FaKitchenSet size={18} />, cat: "Home & Kitchen", count: 20 },
-      ];
-      setCategories(data);
+    // Fetch categories from API
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/api/category/getAllCategories"
+        );
+
+        const allCategories = response.data;
+
+        const data = allCategories
+          .flatMap((category) => category.subcategories)
+          .filter((sub) => sub !== null);
+        setCategories(data); // Set the fetched categories
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
     };
 
     fetchCategories();
@@ -123,13 +117,10 @@ const SideBarFilter = () => {
         <div className="card border-0 shadow">
           <h3>Category</h3>
           <div className="catList cursor">
-            {categories.map((item, index) => (
+            {categories.map((category, index) => (
               <div className="catItem d-flex align-items-center" key={index}>
-                <span className="img">{item.icon}</span>
-                <h4 className="mb-0 mx-3 cat">{item.cat}</h4>
-                <span className="d-flex align-items-center count">
-                  {item.count}
-                </span>
+                <span className="img">{category.icon}</span>
+                <h4 className="mb-0 mx-3 cat">{category.name}</h4>
               </div>
             ))}
           </div>
@@ -172,24 +163,6 @@ const SideBarFilter = () => {
                 </li>
                 <li>
                   <BpCheckbox defaultChecked /> Green (15)
-                </li>
-                <li>
-                  <BpCheckbox /> Blue (20)
-                </li>
-                <li>
-                  <BpCheckbox /> Blue (20)
-                </li>
-                <li>
-                  <BpCheckbox /> Blue (20)
-                </li>
-                <li>
-                  <BpCheckbox /> Blue (20)
-                </li>
-                <li>
-                  <BpCheckbox /> Blue (20)
-                </li>
-                <li>
-                  <BpCheckbox /> Blue (20)
                 </li>
               </ul>
             </div>

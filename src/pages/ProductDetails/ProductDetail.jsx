@@ -7,6 +7,7 @@ import bhakar3 from "./images/bhakar3.jpg";
 import bhakar4 from "./images/bhakar4.jpg";
 import bhakar5 from "./images/bhakar5.jpg";
 
+// import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { IoIosArrowUp } from "react-icons/io";
 import { IoIosArrowDown } from "react-icons/io";
@@ -21,10 +22,56 @@ import Rating from "@mui/material/Rating";
 import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 import Product from "../../components/Product/Product";
-import { CartContext } from "../AddCartPage/CartContext";
+import { CartContext } from "../../utility/CartContext";
 
 const ProductDetail = () => {
-  const { addToCart } = useContext(CartContext);
+  const { addToCart, addToWishlist } = useContext(CartContext);
+  const [relatedProducts] = useState([]); // Related products
+
+  // const { id } = useParams();
+
+  // // Fetch product details using the id
+  // const [product, setProduct] = useState(null);
+  // const [relatedProducts, setRelatedProducts] = useState([]); // Related products
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [error, setError] = useState("");
+
+  // useEffect(() => {
+  //   const fetchProductDetails = async () => {
+  //   try {
+  //     // Fetch the current product details
+  //     const productResponse = await axios.get(
+  //       `http://localhost:8000/api/products/${id}`
+  //     );
+  //     setProduct(productResponse.data);
+
+  //     // Fetch related products based on the category of the current product
+  //     const relatedResponse = await axios.get(
+  //       `http://localhost:8000/api/products?category=${productResponse.data.category}&exclude=${id}`
+  //     );
+  //     setRelatedProducts(relatedResponse.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //     setError("Failed to fetch product details.");
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  //   fetchProductDetails();
+  // }, [id]);
+
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
+
+  // if (error) {
+  //   return <div>{error}</div>;
+  // }
+
+  // if (!product) {
+  //   return <div>Product not found.</div>;
+  // }
 
   // Static product data array
   const productData = {
@@ -131,6 +178,30 @@ const ProductDetail = () => {
     setFormData({ name: "", rating: 0, comment: "" });
   };
 
+  //   const handleAddToCart = async () => {
+  //   const sessionId = localStorage.getItem("sessionId");
+  //   if (!sessionId) {
+  //     alert("Please log in first to add products to your cart."); // Show toast
+  //     navigate("/signin"); // Redirect to the SignIn page
+  //     return;
+  //   }
+
+  //   try {
+  //     await axios.post(
+  //       "http://localhost:8000/api/cart/add",
+  //       { productId: product.id },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${sessionId}`,
+  //         },
+  //       }
+  //     );
+  //     alert("Product added to cart!");
+  //   } catch (error) {
+  //     console.error("Error adding to cart:", error);
+  //   }
+  // };
+
   // add to cart
   const handleAddToCart = () => {
     const cartProducts = {
@@ -168,7 +239,11 @@ const ProductDetail = () => {
               <li>
                 <Link to="/shop">Product</Link>
               </li>
-              <li>Dhawak Gujrati Mini Bhakarwadi</li>
+              <li>
+                {productData.title.length > 50
+                  ? productData.title.substr(0, 50) + "..."
+                  : productData.title}
+              </li>
             </ul>
           </div>
         </div>
@@ -277,7 +352,13 @@ const ProductDetail = () => {
                   <FaCartShopping />
                   &nbsp; Add to Cart
                 </Button>
-                <button className="heart bt" onClick={() => setLiked(!liked)}>
+                <button
+                  className="heart bt"
+                  onClick={() => {
+                    setLiked(!liked);
+                    addToWishlist(product);
+                  }}
+                >
                   {liked ? (
                     <FaHeart size={23} color="#E63946" />
                   ) : (
@@ -519,40 +600,21 @@ const ProductDetail = () => {
           <br />
           <br />
           <div className="relatedProducts pt-3 pb-4 m-4">
-            <h2 className="hd mb-0 mt-0 mx-1">Related Products</h2>
-            <hr />
-            <Slider {...related} className="prodSlider">
-              <div className="item">
-                <Product product={product} />
-              </div>
-              <div className="item">
-                <Product product={product} />
-              </div>
-              <div className="item">
-                <Product product={product} />
-              </div>
-              <div className="item">
-                <Product product={product} />
-              </div>
-              <div className="item">
-                <Product product={product} />
-              </div>
-              <div className="item">
-                <Product product={product} />
-              </div>
-              <div className="item">
-                <Product product={product} />
-              </div>
-              <div className="item">
-                <Product product={product} />
-              </div>
-              <div className="item">
-                <Product product={product} />
-              </div>
-              <div className="item">
-                <Product product={product} />
-              </div>
-            </Slider>
+            {relatedProducts.length > 0 ? (
+              <>
+                <h2 className="hd mb-0 mt-0 mx-1">Related Products</h2>
+                <hr />
+                <Slider {...related} className="prodSlider">
+                  {relatedProducts.map((relatedProduct) => (
+                    <div className="item" key={relatedProduct.id}>
+                      <Product product={relatedProduct} />
+                    </div>
+                  ))}
+                </Slider>
+              </>
+            ) : (
+              <p>No related products found.</p>
+            )}
           </div>
         </div>
       </div>

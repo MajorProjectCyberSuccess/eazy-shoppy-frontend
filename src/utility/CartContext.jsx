@@ -11,10 +11,20 @@ export const CartProvider = ({ children }) => {
     return savedCart ? JSON.parse(savedCart) : [];
   });
 
-  // Save cart items to localStorage whenever they change
+  // Wishlist state
+  const [wishlistItems, setWishlistItems] = useState(() => {
+    const savedWishlist = localStorage.getItem("eazyShoppyWishlist");
+    return savedWishlist ? JSON.parse(savedWishlist) : [];
+  });
+
+  // Save cart and wishlist to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem("eazyShoppyCart", JSON.stringify(cartItems));
   }, [cartItems]);
+
+  useEffect(() => {
+    localStorage.setItem("eazyShoppyWishlist", JSON.stringify(wishlistItems));
+  }, [wishlistItems]);
 
   const addToCart = (product) => {
     setCartItems((prevItems) => {
@@ -50,9 +60,37 @@ export const CartProvider = ({ children }) => {
     setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
   };
 
+  // Wishlist operations
+  const addToWishlist = (product) => {
+    setWishlistItems((prevItems) => {
+      if (prevItems.find((item) => item.id === product.id)) {
+        return prevItems; // Avoid duplicates
+      }
+      return [...prevItems, product];
+    });
+  };
+
+  const removeFromWishlist = (id) => {
+    setWishlistItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  };
+
+  const moveToCart = (product) => {
+    removeFromWishlist(product.id);
+    addToCart({ ...product, quantity: 1 });
+  };
+
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, updateQuantity, removeFromCart }}
+      value={{
+        cartItems,
+        wishlistItems,
+        addToCart,
+        updateQuantity,
+        removeFromCart,
+        addToWishlist,
+        removeFromWishlist,
+        moveToCart,
+      }}
     >
       {children}
     </CartContext.Provider>

@@ -11,10 +11,35 @@ import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import { GrView } from "react-icons/gr";
 import { FaRegHeart } from "react-icons/fa";
 
-import { CartContext } from "../../pages/AddCartPage/CartContext";
+import { CartContext } from "../../utility/CartContext";
 
 const Product = ({ product }) => {
-  const { addToCart } = useContext(CartContext);
+  const { addToCart, addToWishlist } = useContext(CartContext);
+
+  // const handleAddToCart = async () => {
+  //   const sessionId = localStorage.getItem("sessionId");
+  //   if (!sessionId) {
+  //     toast.error("Please log in first to add products to your cart."); // Show toast
+  //     navigate("/signin"); // Redirect to the SignIn page
+  //     return;
+  //   }
+
+  //   try {
+  //     await axios.post(
+  //       "http://localhost:8000/api/cart/add",
+  //       { productId: product.id },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${sessionId}`,
+  //         },
+  //       }
+  //     );
+  //     alert("Product added to cart!");
+  //   } catch (error) {
+  //     console.error("Error adding to cart:", error);
+  //   }
+  // };
+
   const handleAddToCart = () => {
     const productToAdd = {
       id: product.id,
@@ -45,14 +70,17 @@ const Product = ({ product }) => {
             <li className="list-inline-item">
               <Tooltip title="Wishlist" placement="top-start">
                 <Link to="">
-                  <FaRegHeart size={18} />
+                  <FaRegHeart
+                    size={18}
+                    onClick={() => addToWishlist(product)}
+                  />
                 </Link>
               </Tooltip>
             </li>
 
             <li className="list-inline-item">
               <Tooltip title="See" placement="top-end">
-                <Link to={product.productLink}>
+                <Link to={`/shop/product/details/${product.id}`}>
                   <GrView size={18} />
                 </Link>
               </Tooltip>
@@ -64,7 +92,9 @@ const Product = ({ product }) => {
       <div className="info">
         <span className="d-block catName">{product.category}</span>
         <h4 className="title">
-          <Link to={product.productLink}>{product.title}</Link>
+          <Link to={`/shop/product/details/${product.id}`}>
+            {product.title}
+          </Link>
         </h4>
         <Stack spacing={1}>
           <Rating

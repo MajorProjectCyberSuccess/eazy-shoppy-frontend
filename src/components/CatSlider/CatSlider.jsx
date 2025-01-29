@@ -1,98 +1,10 @@
 import "./CatSlider.css";
 import Slider from "react-slick";
 import { useState } from "react";
-// import axios from "axios"; // For API calls
+import { useCategories } from "../../utility/CategoryContext";
 
 const CatSlider = () => {
-  //setCategories()
-  const [categories] = useState([
-    {
-      id: 1,
-      name: "Cake & Milk",
-      imageUrl:
-        "https://api.spicezgold.com/download/file_1734525248057_gro.png",
-      itemCount: 26,
-    },
-    {
-      id: 2,
-      name: "Clothes",
-      imageUrl:
-        "https://api.spicezgold.com/download/file_1734525239704_foot.png",
-      itemCount: 40,
-    },
-    {
-      id: 3,
-      name: "Electronics",
-      imageUrl:
-        "https://api.spicezgold.com/download/file_1734525218436_ele.png",
-      itemCount: 15,
-    },
-    {
-      id: 4,
-      name: "Cake & Milk",
-      imageUrl:
-        "https://api.spicezgold.com/download/file_1734525248057_gro.png",
-      itemCount: 26,
-    },
-    {
-      id: 5,
-      name: "Clothes",
-      imageUrl:
-        "https://api.spicezgold.com/download/file_1734525239704_foot.png",
-      itemCount: 40,
-    },
-    {
-      id: 6,
-      name: "Electronics",
-      imageUrl:
-        "https://api.spicezgold.com/download/file_1734525218436_ele.png",
-      itemCount: 15,
-    },
-    {
-      id: 7,
-      name: "Cake & Milk",
-      imageUrl:
-        "https://api.spicezgold.com/download/file_1734525248057_gro.png",
-      itemCount: 26,
-    },
-    {
-      id: 8,
-      name: "Clothes",
-      imageUrl:
-        "https://api.spicezgold.com/download/file_1734525239704_foot.png",
-      itemCount: 40,
-    },
-    {
-      id: 9,
-      name: "Electronics",
-      imageUrl:
-        "https://api.spicezgold.com/download/file_1734525218436_ele.png",
-      itemCount: 15,
-    },
-    {
-      id: 10,
-      name: "Clothes",
-      imageUrl:
-        "https://api.spicezgold.com/download/file_1734525239704_foot.png",
-      itemCount: 40,
-    },
-    {
-      id: 11,
-      name: "Electronics",
-      imageUrl:
-        "https://api.spicezgold.com/download/file_1734525218436_ele.png",
-      itemCount: 15,
-    },
-  ]); // State to hold category data
-
   const [itemBg] = useState([
-    // Background color array for each category
-    "#fffceb",
-    "#ecffec",
-    "#feefea",
-    "#fff3ff",
-    "#f2fce4",
-    "#ecffec",
     "#fffceb",
     "#ecffec",
     "#feefea",
@@ -107,19 +19,15 @@ const CatSlider = () => {
     "#ecffec",
   ]);
 
-  // Fetch categories dynamically from API
-  // useEffect(() => {
-  //   const fetchCategories = async () => {
-  //     try {
-  //       const response = await axios.get("/api/categories"); // Example endpoint
-  //       setCategories(response.data); // Set the fetched categories
-  //     } catch (error) {
-  //       console.error("Error fetching categories:", error);
-  //     }
-  //   };
+  const { parentCategories, loading, error } = useCategories();
 
-  //   fetchCategories();
-  // }, []);
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   const settings = {
     dots: false,
@@ -135,21 +43,19 @@ const CatSlider = () => {
       <div className="container-fluid">
         <h2 className="hd mx-2">Featured Categories</h2>
         <Slider {...settings} className="cat_slider_menu">
-          {categories.length !== 0 &&
-            categories.map((category, index) => {
-              return (
-                <div className="item" key={index}>
-                  <div
-                    className="info"
-                    style={{ background: itemBg[index % itemBg.length] }}
-                  >
-                    <img src={category.imageUrl} alt={category.name} />
-                    <h5>{category.name}</h5>
-                    <p>{category.itemCount} items</p>
-                  </div>
+          {parentCategories.length !== 0 &&
+            parentCategories.map((category, index) => (
+              <div className="item" key={category.id}>
+                <div
+                  className="info"
+                  style={{ background: itemBg[index % itemBg.length] }}
+                >
+                  <img src={category.imageUrl} alt={category.name} />
+                  <h5>{category.name}</h5>
+                  {/* <p>{category.itemCount} items</p> */}
                 </div>
-              );
-            })}
+              </div>
+            ))}
         </Slider>
       </div>
     </div>

@@ -1,3 +1,5 @@
+import { useCategories } from "../../utility/CategoryContext";
+
 import "./Home.css";
 import Slider from "react-slick";
 import Banner from "../../components/Banners/Banner";
@@ -17,6 +19,18 @@ import TopProduct3 from "./images/toppro3.jpg";
 // import Imgb1 from "./images/imgb1.jpg";
 
 const Home = () => {
+  const { parentCategories, loading, error } = useCategories();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  // console.log("Home cat", categories);
+
   const settings = {
     dots: false,
     infinite: true,
@@ -159,20 +173,6 @@ const Home = () => {
     },
   ];
 
-  // const product = {
-  //   id: 3,
-  //   image: Imgb1,
-  //   category: "Snacks",
-  //   title: "Haldirams Namkeen - Aloo Bhujia, 200G",
-  //   rating: 4.5,
-  //   brand: "EazyShoppy",
-  //   price: 2.5,
-  //   oldPrice: 3,
-  //   tag: "sale",
-  //   productLink: "/shop/product/details",
-  //   onAddToCart: handleAddToCart,
-  // };
-
   const tProducts = [
     {
       id: 1,
@@ -211,41 +211,12 @@ const Home = () => {
           <div className="d-flex align-items-center">
             <h2 className="hd mb-0 mt-0 mx-1">Popular Products</h2>
             <ul className="list list-inline ml-auto filterTab mb-0">
-              <li className="list-inline-item">
-                <a href="" className="cursor">
-                  All
-                </a>
-              </li>
-              <li className="list-inline-item">
-                <a href="" className="cursor">
-                  Electronics
-                </a>
-              </li>
-              <li className="list-inline-item">
-                <a href="" className="cursor">
-                  Bags
-                </a>
-              </li>
-              <li className="list-inline-item">
-                <a href="" className="cursor">
-                  Footwear
-                </a>
-              </li>
-              <li className="list-inline-item">
-                <a href="" className="cursor">
-                  Groceries
-                </a>
-              </li>
-              <li className="list-inline-item">
-                <a href="" className="cursor">
-                  Beauty
-                </a>
-              </li>
-              <li className="list-inline-item">
-                <a href="" className="cursor">
-                  Jewellery
-                </a>
-              </li>
+              {/* Dynamically render parent categories */}
+              {parentCategories.slice(0, 7).map((category) => (
+                <li className="list-inline-item" key={category.id}>
+                  <a className="cursor">{category.name}</a>
+                </li>
+              ))}
             </ul>
           </div>
 

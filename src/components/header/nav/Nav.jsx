@@ -1,11 +1,25 @@
 import "./Nav.css";
-import "../../../css/style.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RiArrowDownSLine } from "react-icons/ri";
 import { BiCategoryAlt } from "react-icons/bi";
 import { RiCustomerService2Fill } from "react-icons/ri";
+import { useCategories } from "../../../utility/CategoryContext";
+
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Nav = () => {
+  const { categories, parentCategories, loading, error } = useCategories();
+  const navigate = useNavigate();
+
+  const handleSubCategoryClick = (id) => {
+    navigate(`/products/${id}`);
+  };
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
     <div className="nav d-flex align-items-center">
       <div className="container-fluid">
@@ -30,7 +44,7 @@ const Nav = () => {
                 </li>
                 <li className="list-inline-item">
                   <button className="navTabs">
-                    <Link to="/shop">All Products</Link>
+                    <Link to="/shop/:id">All Products</Link>
                   </button>
                 </li>
                 <li className="list-inline-item">
@@ -40,46 +54,21 @@ const Nav = () => {
                   {/* shop dropdown menu start*/}
                   <div className="dropdown_menu">
                     <ul>
-                      <li>
-                        <button>
-                          <Link to="/shop/clothing">Clothing</Link>
-                        </button>
-                      </li>
-                      <li>
-                        <button>
-                          <Link to="/shop/electronics">Electronics</Link>
-                        </button>
-                      </li>
-                      <li>
-                        <button>
-                          <Link to="/shop/beauty">Beauty & wellness</Link>
-                        </button>
-                      </li>
-                      <li>
-                        <button>
-                          <Link to="/shop/jewellery">Jewellery</Link>
-                        </button>
-                      </li>
-                      <li>
-                        <button>
-                          <Link to="/shop/kids">Kids</Link>
-                        </button>
-                      </li>
-                      <li>
-                        <button>
-                          <Link to="/shop/shoes">Shoes</Link>
-                        </button>
-                      </li>
-                      <li>
-                        <button>
-                          <Link to="/shop/kitchen">Home & Kitchen</Link>
-                        </button>
-                      </li>
-                      <li>
-                        <button>
-                          <Link to="/shop/bags">Bags</Link>
-                        </button>
-                      </li>
+                      {categories.map((category) => (
+                        <li key={category.id}>
+                          <button>
+                            {/* Dynamically set the link */}
+                            <Link
+                              to={`/shop/${category.name.toLowerCase()}`}
+                              onClick={() =>
+                                handleSubCategoryClick(category.id)
+                              }
+                            >
+                              {category.name}
+                            </Link>
+                          </button>
+                        </li>
+                      ))}
                     </ul>
                   </div>
                   {/* shop dropdown menu start*/}
@@ -96,75 +85,38 @@ const Nav = () => {
                   {/* dropdown Mega menu start*/}
                   <div className="dropdown_menu megaMenu w-80 mb-2">
                     <div className="row">
-                      <div className="col">
-                        <h4>Fruit & Vegetables</h4>
-                        <ul className="mt-4 mb-0">
-                          <li>
-                            <Link to="">Fresh Vegetables</Link>
-                          </li>
-                          <li>
-                            <Link to="">Herbs & Seasonings</Link>
-                          </li>
-                          <li>
-                            <Link to="">Cuts & Sprouts</Link>
-                          </li>
-                          <li>
-                            <Link to="">Exotic Fruits & Veggies</Link>
-                          </li>
-                          <li>
-                            <Link to="">Fruits & Vegetables</Link>
-                          </li>
-                          <li>
-                            <Link to="">Packaged Produce</Link>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="col">
-                        <h4>Breakfast & Dairy</h4>
-                        <ul className="mt-4 mb-0">
-                          <li>
-                            <Link to="">Fresh Vegetables</Link>
-                          </li>
-                          <li>
-                            <Link to="">Herbs & Seasonings</Link>
-                          </li>
-                          <li>
-                            <Link to="">Cuts & Sprouts</Link>
-                          </li>
-                          <li>
-                            <Link to="">Exotic Fruits & Veggies</Link>
-                          </li>
-                          <li>
-                            <Link to="">Fruits & Vegetables</Link>
-                          </li>
-                          <li>
-                            <Link to="">Packaged Produce</Link>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="col">
-                        <h4>Meat & Seafood</h4>
-                        <ul className="mt-4 mb-0">
-                          <li>
-                            <Link to="">Fresh Vegetables</Link>
-                          </li>
-                          <li>
-                            <Link to="">Herbs & Seasonings</Link>
-                          </li>
-                          <li>
-                            <Link to="">Cuts & Sprouts</Link>
-                          </li>
-                          <li>
-                            <Link to="">Exotic Fruits & Veggies</Link>
-                          </li>
-                          <li>
-                            <Link to="">Fruits & Vegetables</Link>
-                          </li>
-                          <li>
-                            <Link to="">Packaged Produce</Link>
-                          </li>
-                        </ul>
-                      </div>
+                      {parentCategories.slice(0, 3).map((category) => (
+                        <div className="col" key={category.id}>
+                          <h4>{category.name}</h4>
+                          <ul className="mt-4 mb-0">
+                            {categories.map(
+                              (sub) =>
+                                category.id === sub.parentId && (
+                                  <li key={sub.id}>
+                                    <Link
+                                      to={`/shop/${sub.name.toLowerCase()}`}
+                                      onClick={() => {
+                                        handleSubCategoryClick(sub.id);
+                                      }}
+                                    >
+                                      {sub.name}
+                                    </Link>
+                                  </li>
+                                )
+                            )}
+                            <Backdrop
+                              sx={{
+                                color: "#fff",
+                                zIndex: (theme) => theme.zIndex.drawer + 1,
+                              }}
+                              open={loading}
+                            >
+                              <CircularProgress color="inherit" />
+                            </Backdrop>
+                          </ul>
+                        </div>
+                      ))}
+
                       <div className="col">
                         <img
                           src="https://api.spicezgold.com/download/file_1734525634299_NewProject(2).jpg"
@@ -214,7 +166,7 @@ const Nav = () => {
                       </li>
                       <li>
                         <button>
-                          <Link to="/register">Register</Link>
+                          <Link to="/signup">Register</Link>
                         </button>
                       </li>
                       <li>

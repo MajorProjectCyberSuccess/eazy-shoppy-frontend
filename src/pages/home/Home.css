@@ -130,3 +130,7 @@
 .topProductsSection {
   padding: 35px 0px;
 }
+
+.ml-auto {
+  margin-left: auto;
+}
