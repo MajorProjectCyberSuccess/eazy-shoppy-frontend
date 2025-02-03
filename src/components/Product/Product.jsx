@@ -42,15 +42,15 @@ const Product = ({ product }) => {
 
   const handleAddToCart = () => {
     const productToAdd = {
-      id: product.id,
-      name: product.title,
-      price: product.price,
+      productId: product.productId,
+      name: product.name,
+      discountedPrice: product.discountedPrice,
       quantity: 1,
       image: product.image,
     };
     // console.log("productToAdd", productToAdd);
     addToCart(productToAdd);
-    alert(`${product.title} added to cart!`);
+    alert(`${product.name} added to cart!`);
   };
 
   return (
@@ -62,7 +62,7 @@ const Product = ({ product }) => {
       <div className="imgWrapper">
         <img
           src={product.image}
-          alt={product.title}
+          alt={product.name}
           className="w-100 transition"
         />
         <div className="overlay transition">
@@ -80,7 +80,7 @@ const Product = ({ product }) => {
 
             <li className="list-inline-item">
               <Tooltip title="See" placement="top-end">
-                <Link to={`/shop/product/details/${product.id}`}>
+                <Link to={`/shop/product/details/${product.productId}`}>
                   <GrView size={18} />
                 </Link>
               </Tooltip>
@@ -92,15 +92,17 @@ const Product = ({ product }) => {
       <div className="info">
         <span className="d-block catName">{product.category}</span>
         <h4 className="title">
-          <Link to={`/shop/product/details/${product.id}`}>
-            {product.title}
+          <Link to={`/shop/product/details/${product.productId}`}>
+            {product.name.length > 35
+              ? product.name.substr(0, 35) + "..."
+              : product.name}
           </Link>
         </h4>
         <Stack spacing={1}>
           <Rating
             className="rating"
             name="half-rating-read"
-            defaultValue={product.rating}
+            defaultValue={product.ratings}
             precision={0.5}
             readOnly
           />
@@ -108,13 +110,13 @@ const Product = ({ product }) => {
         <span className="brand d-block text-g">
           by <Link className="text-g">{product.brand}</Link>
         </span>
-        <div className="d-flex align-item-center mt-3">
-          <div className="d-flex align-item-center priceWrap">
+        <div className="d-flex align-items-center mt-3">
+          <div className="d-flex align-items-center priceWrap">
             <span className="price text-g font-weight-bold">
-              ${product.price}
+              ₹{product.discountedPrice}
             </span>
-            {product.oldPrice && (
-              <span className="oldPrice">${product.oldPrice}</span>
+            {product.originalPrice && (
+              <span className="oldPrice">${product.originalPrice}</span>
             )}
           </div>
           <button className="text-g transition" onClick={handleAddToCart}>
@@ -132,15 +134,15 @@ const Product = ({ product }) => {
 
 Product.propTypes = {
   product: PropTypes.shape({
-    id: PropTypes.number,
+    productId: PropTypes.number,
     tag: PropTypes.string,
     image: PropTypes.string.isRequired,
     category: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    rating: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    ratings: PropTypes.number.isRequired,
     brand: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    oldPrice: PropTypes.number,
+    discountedPrice: PropTypes.number.isRequired,
+    originalPrice: PropTypes.number,
     productLink: PropTypes.string.isRequired,
   }).isRequired,
   onAddToCart: PropTypes.func,

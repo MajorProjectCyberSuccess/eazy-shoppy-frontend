@@ -1,56 +1,32 @@
 import "./CartPage.css";
-import { useContext } from "react";
-
+import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../utility/CartContext";
-
 import { Link } from "react-router-dom";
 import { AiFillDelete } from "react-icons/ai";
 
 const CartPage = () => {
-  const { cartItems, updateQuantity, removeFromCart } = useContext(CartContext);
+  const { cartItems, updateQuantity, removeFromCart, isLoading, error } =
+    useContext(CartContext);
+  const [localCartItems, setLocalCartItems] = useState([]);
+
+  // Sync local state with context cartItems
+  useEffect(() => {
+    if (cartItems) {
+      setLocalCartItems(cartItems);
+    }
+  }, [cartItems]);
 
   const calculateTotal = () =>
-    cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  // const [cartItems, setCartItems] = useState([
-  //   {
-  //     id: 1,
-  //     name: "Men White & Navy Blue Colorblocked Lightweight Com...",
-  //     price: 1500,
-  //     quantity: 1,
-  //     image: Cart1,
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "VNEED Women Embroidered Rayon Kurta Pant Set | Kur...",
-  //     price: 450,
-  //     quantity: 1,
-  //     image: Cart2,
-  //   },
-  // ]);
+    localCartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-  // const handleQuantityChange = (id, action) => {
-  //   setCartItems((prevItems) =>
-  //     prevItems.map((item) =>
-  //       item.id === id
-  //         ? {
-  //             ...item,
-  //             quantity:
-  //               action === "increment"
-  //                 ? item.quantity + 1
-  //                 : Math.max(1, item.quantity - 1),
-  //           }
-  //         : item
-  //     )
-  //   );
-  // };
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-  // const handleRemove = (id) => {
-  //   setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
-  // };
+  if (error) {
+    return <div>{error}</div>;
+  }
 
-  // const calculateTotal = () =>
-  //   cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  console.log(cartItems);
   return (
     <>
       <div className="breadcrumbWrapper">
@@ -67,9 +43,9 @@ const CartPage = () => {
       <div className="cart-page">
         <h2>Your Cart</h2>
         <div className="container-fluid">
-          <p>There are {cartItems.length} products in your cart</p>
+          <p>There are {localCartItems.length} products in your cart</p>
           <div className="row">
-            <div className="col-md-9 ">
+            <div className="col-md-9">
               <table className="cart-table">
                 <thead>
                   <tr>
@@ -81,18 +57,17 @@ const CartPage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {cartItems.map((item, index) => (
+                  {localCartItems.map((item, index) => (
                     <tr key={item.id || index}>
                       <td>
                         <div className="d-flex align-items-center">
-                          <img src={item.image} alt={item.image} />
+                          <img src={item.image} alt={item.name} />
                           <p>
                             {item && item.name
                               ? item.name.length > 40
                                 ? item.name.substr(0, 40) + "..."
                                 : item.name
                               : "No Name"}
-                            {/* {item.name} */}
                           </p>
                         </div>
                       </td>

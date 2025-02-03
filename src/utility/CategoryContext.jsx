@@ -19,7 +19,8 @@ export const CategoryProvider = ({ children }) => {
           "http://localhost:8000/api/category/getAllCategories"
         );
 
-        const allCategories = response.data;
+        const allCategories = response.data.data;
+        console.log(allCategories);
 
         // Separate parent categories and subcategories
         const parentCategories = allCategories.filter(

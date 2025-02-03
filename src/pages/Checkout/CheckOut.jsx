@@ -1,5 +1,6 @@
 import "./CheckOut.css";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Add this for navigation
 import axios from "axios";
 
 import TextField from "@mui/material/TextField";
@@ -8,28 +9,33 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress"; // Add this for loading spinner
 
 const CheckOut = () => {
-  const [countries, setCountries] = useState([]); // Stores the list of countries
-  const [selectedCountry, setSelectedCountry] = useState(""); // Tracks the selected country
-  const [cartItems, setCartItems] = useState([]); // Stores the cart items
-  const [cartTotal, setCartTotal] = useState(0); // Stores the cart total
-  const [addresses, setAddresses] = useState([]); // Stores the user's addresses
-  const [selectedAddress, setSelectedAddress] = useState(null); // Tracks the selected address
+  const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [cartItems, setCartItems] = useState([]);
+  const [cartTotal, setCartTotal] = useState(0);
+  const [addresses, setAddresses] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState(null);
   const [newAddress, setNewAddress] = useState({
     street: "",
     city: "",
     state: "",
     zipCode: "",
     country: "",
-  }); // Tracks the new address input
+    userId: localStorage.getItem("userId"),
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [checkoutLoading, setCheckoutLoading] = useState(false); // Add this for checkout loading state
+  const navigate = useNavigate(); // Add this for navigation
 
   // Fetch countries
   const getCountry = async (url) => {
     try {
       const response = await axios.get(url);
       const countryData = response.data.data || [];
-      // Extract unique country names
       const uniqueCountries = [
         ...new Set(countryData.map((item) => item.country)),
       ];
@@ -42,14 +48,12 @@ const CheckOut = () => {
   // Fetch cart items and total
   const fetchCartData = async () => {
     try {
-      const sessionId = localStorage.getItem("sessionId");
-      const response = await axios.get("/api/cart/items", {
-        params: {
-          sessionId,
-          userId: null, // Replace with actual userId if logged in
-        },
-      });
+      const userId = localStorage.getItem("userId");
+      const response = await axios.get(
+        `http://localhost:8000/api/cart/items?userId=${userId}`
+      );
       setCartItems(response.data);
+
       const total = response.data.reduce(
         (sum, item) => sum + item.product.price * item.quantity,
         0
@@ -57,23 +61,35 @@ const CheckOut = () => {
       setCartTotal(total);
     } catch (error) {
       console.error("Error fetching cart data:", error);
+      alert("Failed to fetch cart items. Please try again.");
     }
   };
 
   // Fetch user addresses
   const fetchAddresses = async () => {
+    setLoading(true);
+    setError(null);
     try {
-      const userId = null; // Replace with actual userId if logged in
-      const response = await axios.get(`/api/addresses/user/${userId}`);
-      setAddresses(response.data);
+      const userId = localStorage.getItem("userId");
+      const response = await axios.get(
+        `http://localhost:8000/api/address/getAddressesByUserId?userId=${userId}`
+      );
+      setAddresses(response.data.data);
     } catch (error) {
+      setError("Failed to fetch addresses. Please try again.");
       console.error("Error fetching addresses:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   // Handle country selection
   const handleCountryChange = (event) => {
     setSelectedCountry(event.target.value);
+    setNewAddress((prevState) => ({
+      ...prevState,
+      country: event.target.value,
+    }));
   };
 
   // Handle address selection
@@ -93,15 +109,20 @@ const CheckOut = () => {
   // Save new address
   const handleSaveNewAddress = async () => {
     try {
-      const userId = null; // Replace with actual userId if logged in
-      const response = await axios.post("/api/addresses", {
-        ...newAddress,
-        userId,
-      });
-      setAddresses((prevAddresses) => [...prevAddresses, response.data]);
-      setSelectedAddress(response.data);
+      const userId = localStorage.getItem("userId");
+      const response = await axios.post(
+        "http://localhost:8000/api/address/create",
+        {
+          ...newAddress,
+          userId,
+        }
+      );
+      setAddresses((prevAddresses) => [...prevAddresses, response.data.data]);
+      setSelectedAddress(response.data.data);
+      alert("Address saved successfully!");
     } catch (error) {
       console.error("Error saving new address:", error);
+      alert("Failed to save address. Please try again.");
     }
   };
 
@@ -112,16 +133,38 @@ const CheckOut = () => {
       return;
     }
 
+    setCheckoutLoading(true); // Show loading spinner
+    setError(null);
+
     try {
-      const userId = null; // Replace with actual userId if logged in
-      await axios.post("/api/orders", {
+      const userId = localStorage.getItem("userId");
+      const orderPayload = {
         userId,
         addressId: selectedAddress.id,
-        cartItems,
-      });
+        cartItems: cartItems.map((item) => ({
+          productId: item.product.id,
+          quantity: item.quantity,
+        })),
+        totalAmount: cartTotal,
+      };
+
+      const response = await axios.post(
+        "http://localhost:8000/api/orders",
+        orderPayload
+      );
+      console.log(response);
+      // Clear the cart after placing the order
+      setCartItems([]);
+      setCartTotal(0);
+
+      // Redirect to the orders page
+      navigate("/shop/orders");
       alert("Order placed successfully!");
     } catch (error) {
       console.error("Error placing order:", error);
+      setError("Failed to place order. Please try again.");
+    } finally {
+      setCheckoutLoading(false); // Hide loading spinner
     }
   };
 
@@ -138,13 +181,14 @@ const CheckOut = () => {
           <div className="row">
             <div className="col-md-8">
               <h2 className="hd">BILLING DETAILS</h2>
-              <div className="row">
+              <div className="row mb-4">
                 <div className="col-md-6">
                   <div className="form-group">
                     <TextField
-                      label="Full Name*"
+                      label="Full Name"
                       variant="outlined"
                       fullWidth
+                      required
                     />
                   </div>
                 </div>
@@ -157,6 +201,7 @@ const CheckOut = () => {
                         value={selectedCountry}
                         onChange={handleCountryChange}
                         label="Country"
+                        required
                       >
                         {countries.map((country, index) => (
                           <MenuItem value={country} key={index}>
@@ -169,67 +214,72 @@ const CheckOut = () => {
                 </div>
               </div>
 
-              <div className="row">
+              <div className="row mb-4">
                 <div className="col-md-12">
                   <div className="form-group">
                     <TextField
-                      label="Street Address*"
+                      label="Street Address"
                       variant="outlined"
                       fullWidth
                       name="street"
                       value={newAddress.street}
                       onChange={handleNewAddressChange}
+                      required
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="row">
+              <div className="row mb-4">
                 <div className="col-md-6">
                   <div className="form-group">
                     <TextField
-                      label="City*"
+                      label="City"
                       variant="outlined"
                       fullWidth
                       name="city"
                       value={newAddress.city}
                       onChange={handleNewAddressChange}
+                      required
                     />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <TextField
-                      label="State*"
+                      label="State"
                       variant="outlined"
                       fullWidth
                       name="state"
                       value={newAddress.state}
                       onChange={handleNewAddressChange}
+                      required
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="row">
+              <div className="row mb-5">
                 <div className="col-md-6">
                   <div className="form-group">
                     <TextField
-                      label="Zip Code*"
+                      label="Zip Code"
                       variant="outlined"
                       fullWidth
                       name="zipCode"
                       value={newAddress.zipCode}
                       onChange={handleNewAddressChange}
+                      required
                     />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <TextField
-                      label="Phone Number*"
+                      label="Phone Number"
                       variant="outlined"
                       fullWidth
+                      required
                     />
                   </div>
                 </div>
@@ -237,7 +287,9 @@ const CheckOut = () => {
 
               <div className="row">
                 <div className="col-md-12">
-                  <h3>Select Address</h3>
+                  <h3 className="m-3">Select Address</h3>
+                  {loading && <p>Loading addresses...</p>}
+                  {error && <p style={{ color: "red" }}>{error}</p>}
                   {addresses.map((address) => (
                     <div
                       key={address.id}
@@ -261,7 +313,7 @@ const CheckOut = () => {
                 </div>
               </div>
 
-              <div className="row">
+              <div className="row m-2">
                 <div className="col-md-12">
                   <Button
                     variant="contained"
@@ -277,14 +329,18 @@ const CheckOut = () => {
             <div className="col-md-4">
               <h2 className="hd">YOUR ORDER</h2>
               <div className="order-summary">
-                {cartItems.map((item) => (
-                  <div key={item.id} className="cart-item">
-                    <p>
-                      {item.product.name} - ${item.product.price} x{" "}
-                      {item.quantity}
-                    </p>
-                  </div>
-                ))}
+                {cartItems.length === 0 ? (
+                  <p>Your cart is empty.</p>
+                ) : (
+                  cartItems.map((item) => (
+                    <div key={item.id} className="cart-item">
+                      <p>
+                        {item.product.name} - ${item.product.price} x{" "}
+                        {item.quantity}
+                      </p>
+                    </div>
+                  ))
+                )}
                 <h3>Cart Total: ${cartTotal.toFixed(2)}</h3>
               </div>
 
@@ -293,8 +349,13 @@ const CheckOut = () => {
                 color="primary"
                 fullWidth
                 onClick={handleCheckout}
+                disabled={checkoutLoading || cartItems.length === 0} // Disable button if cart is empty or loading
               >
-                Place Order
+                {checkoutLoading ? (
+                  <CircularProgress size={24} color="inherit" /> // Show loading spinner
+                ) : (
+                  "Place Order"
+                )}
               </Button>
             </div>
           </div>

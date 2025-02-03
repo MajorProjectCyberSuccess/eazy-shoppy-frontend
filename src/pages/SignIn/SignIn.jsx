@@ -1,7 +1,9 @@
-import { useState } from "react";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
 import "./SignIn.css";
+import { useState } from "react";
+
+import axios from "axios";
+
+import { Link, useNavigate } from "react-router-dom";
 
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -15,30 +17,29 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true); // Set loading to true when the request starts
-    console.log("Form submitted"); // Debugging log
+    setIsLoading(true);
+    setError("");
+
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/users/signin",
+        "http://localhost:8000/api/user/login",
         {
           email,
           password,
         }
       );
-      if (response.data.roleType !== "user") {
-        //in admin panel will go this
-        alert("Your not user");
-      } else {
-        console.log("Response:", response.data); // Debugging log
-        alert("Login successful!");
-        localStorage.setItem("sessionId", response.data.sessionId); // Store session ID
-        localStorage.setItem("user", JSON.stringify(response.data));
 
+      if (response.status === 200 && response.data.status === "Success") {
+        const userId = response.data.data;
+        localStorage.setItem("userId", userId);
+        alert("Login successful!");
         navigate("/");
+      } else {
+        setError("Invalid login. Please check your credentials.");
       }
     } catch (error) {
-      console.error(error);
-      setError("Invalid email or password. Please try again.");
+      console.error("Login Error:", error);
+      setError("Login failed. Please try again later.");
     } finally {
       setIsLoading(false);
     }
@@ -85,7 +86,6 @@ const SignIn = () => {
         </div>
       </div>
 
-      {/* Backdrop with CircularProgress */}
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={isLoading}

@@ -1,13 +1,16 @@
+import "./header.css";
 import { useEffect, useRef, useState, useContext } from "react";
+
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+
 import { CartContext } from "../../utility/CartContext";
 
-import "./header.css";
-import axios from "axios";
-import { MdOutlineAccountCircle } from "react-icons/md";
-import { FiShoppingCart } from "react-icons/fi";
 import { FaRegHeart } from "react-icons/fa";
 import { IoIosSearch } from "react-icons/io";
+import { FiShoppingCart } from "react-icons/fi";
 import { MdOutlineLocationOn } from "react-icons/md";
+import { MdOutlineAccountCircle } from "react-icons/md";
 import {
   CiUser,
   CiLocationOn,
@@ -15,10 +18,10 @@ import {
   CiSettings,
   CiLogout,
 } from "react-icons/ci";
+
 import Select from "../selectDrop/Select";
 import Nav from "./nav/Nav";
 import Logo from "./images/EazyShoppy.png";
-import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isOpenDropDown, setIsOpenDropDown] = useState(false);
@@ -31,14 +34,13 @@ const Header = () => {
   };
 
   // Check if the user is logged in
-  const isLoggedIn = localStorage.getItem("sessionId") !== null;
+  const isLoggedIn = localStorage.getItem("userId") !== null;
 
   // Handle logout
   const handleLogout = () => {
     setIsOpenDropDown(!isOpenDropDown);
-    localStorage.removeItem("sessionId"); // Clear the session
-    localStorage.removeItem("user"); // Clear the session
-    navigate("/login"); // Redirect to the SignIn page
+    localStorage.removeItem("userId"); // Clear the session
+    navigate("/login");
   };
 
   const countryList = [];

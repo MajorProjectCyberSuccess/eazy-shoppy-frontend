@@ -1,7 +1,11 @@
-import { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import "./SignUp.css";
+
+import { useState } from "react";
+
+import axios from "axios";
+
+import { useNavigate } from "react-router-dom";
+
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -67,7 +71,7 @@ const SignUp = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:8000/api/users/register",
+        "http://localhost:8000/api/user/create",
         userData
       );
       console.log(response);

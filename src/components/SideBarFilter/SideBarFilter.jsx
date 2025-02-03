@@ -1,6 +1,7 @@
 import "./SideFilter.css";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState } from "react";
+
+import PropTypes from "prop-types";
 
 import { LiaFilterSolid } from "react-icons/lia";
 
@@ -8,6 +9,8 @@ import Slider from "@mui/material/Slider";
 import { styled } from "@mui/material/styles";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
+
+import { useCategories } from "../../utility/CategoryContext";
 
 const BpIcon = styled("span")(({ theme }) => ({
   borderRadius: 3,
@@ -81,34 +84,27 @@ function valuetext(value) {
   return `${value}°C`;
 }
 
-const SideBarFilter = () => {
-  const [categories, setCategories] = useState([]);
+const SideBarFilter = ({ onCategorySelect }) => {
   const [value, setValue] = useState([0, 1000]);
+  const { categories, loading, error } = useCategories();
 
-  useEffect(() => {
-    // Fetch categories from API
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8000/api/category/getAllCategories"
-        );
+  // Handle loading and error states
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-        const allCategories = response.data;
-
-        const data = allCategories
-          .flatMap((category) => category.subcategories)
-          .filter((sub) => sub !== null);
-        setCategories(data); // Set the fetched categories
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const handleCategoryClick = (category) => {
+    if (onCategorySelect) {
+      onCategorySelect(category);
+    }
   };
 
   return (
@@ -118,7 +114,11 @@ const SideBarFilter = () => {
           <h3>Category</h3>
           <div className="catList cursor">
             {categories.map((category, index) => (
-              <div className="catItem d-flex align-items-center" key={index}>
+              <div
+                className="catItem d-flex align-items-center"
+                key={index}
+                onClick={() => handleCategoryClick(category)}
+              >
                 <span className="img">{category.icon}</span>
                 <h4 className="mb-0 mx-3 cat">{category.name}</h4>
               </div>
@@ -189,6 +189,10 @@ const SideBarFilter = () => {
       </section>
     </>
   );
+};
+
+SideBarFilter.propTypes = {
+  onCategorySelect: PropTypes.func,
 };
 
 export default SideBarFilter;
