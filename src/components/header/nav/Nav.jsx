@@ -1,20 +1,16 @@
 import "./Nav.css";
-import { Link, useNavigate } from "react-router-dom";
-import { RiArrowDownSLine } from "react-icons/ri";
-import { BiCategoryAlt } from "react-icons/bi";
-import { RiCustomerService2Fill } from "react-icons/ri";
+import { Link } from "react-router-dom";
+
 import { useCategories } from "../../../utility/CategoryContext";
+
+import { BiCategoryAlt } from "react-icons/bi";
+import { RiCustomerService2Fill, RiArrowDownSLine } from "react-icons/ri";
 
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const Nav = () => {
   const { categories, parentCategories, loading, error } = useCategories();
-  const navigate = useNavigate();
-
-  const handleSubCategoryClick = (id) => {
-    navigate(`/products/${id}`);
-  };
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -58,12 +54,7 @@ const Nav = () => {
                         <li key={category.id}>
                           <button>
                             {/* Dynamically set the link */}
-                            <Link
-                              to={`/shop/${category.name.toLowerCase()}`}
-                              onClick={() =>
-                                handleSubCategoryClick(category.id)
-                              }
-                            >
+                            <Link to={`/shop/${category.id}`}>
                               {category.name}
                             </Link>
                           </button>
@@ -93,12 +84,7 @@ const Nav = () => {
                               (sub) =>
                                 category.id === sub.parentId && (
                                   <li key={sub.id}>
-                                    <Link
-                                      to={`/shop/${sub.name.toLowerCase()}`}
-                                      onClick={() => {
-                                        handleSubCategoryClick(sub.id);
-                                      }}
-                                    >
+                                    <Link to={`/shop/${sub.id}`}>
                                       {sub.name}
                                     </Link>
                                   </li>

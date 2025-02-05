@@ -1,8 +1,9 @@
 import "./header.css";
 import { useEffect, useRef, useState, useContext } from "react";
 
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+
+import axios from "axios";
 
 import { CartContext } from "../../utility/CartContext";
 

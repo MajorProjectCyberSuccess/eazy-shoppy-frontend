@@ -1,7 +1,7 @@
 .productContainer {
   width: 100%;
   /* max-width: 300px; */
-  height: 420px;
+  height: 430px;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   overflow: hidden;
@@ -57,7 +57,7 @@
 
 .productContainer .imgWrapper img {
   width: 100%;
-  height: auto;
+  height: 220px;
   transition: transform 0.3s ease;
 }
 

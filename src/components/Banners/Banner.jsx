@@ -1,5 +1,6 @@
 import "./Banner.css";
 import { IoIosArrowRoundForward } from "react-icons/io";
+
 import Banner1 from "./images/artical1.png";
 import Banner2 from "./images/artical2.png";
 import Banner3 from "./images/artical3.png";

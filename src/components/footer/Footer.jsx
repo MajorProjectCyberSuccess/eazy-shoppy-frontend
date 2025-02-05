@@ -1,10 +1,11 @@
 import "./footer.css";
+
+import logo from "./images/EazyShoppy-bg.png";
 import foot1 from "./images/foot1.svg";
 import foot2 from "./images/foot2.svg";
 import foot3 from "./images/foot3.svg";
 import foot4 from "./images/foot4.svg";
 import foot5 from "./images/foot5.svg";
-import logo from "./images/EazyShoppy-bg.png";
 
 const Footer = () => {
   return (

@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import axios from "axios";
+import PropTypes from "prop-types";
 
 export const CartContext = createContext();
 
@@ -46,7 +46,7 @@ export const CartProvider = ({ children }) => {
   const addToCart = async (product) => {
     const userId = localStorage.getItem("userId");
     if (!userId) {
-      setError("Please log in to add items to the cart.");
+      alert("Please log in to add items to the cart.");
       return;
     }
 
@@ -166,7 +166,7 @@ export const CartProvider = ({ children }) => {
   // Wishlist operations (local state for now)
   const addToWishlist = (product) => {
     setWishlistItems((prevItems) => {
-      if (prevItems.find((item) => item.id === product.id)) {
+      if (prevItems.find((item) => item.productId === product.productId)) {
         return prevItems; // Avoid duplicates
       }
       return [...prevItems, product];
@@ -174,11 +174,13 @@ export const CartProvider = ({ children }) => {
   };
 
   const removeFromWishlist = (id) => {
-    setWishlistItems((prevItems) => prevItems.filter((item) => item.id !== id));
+    setWishlistItems((prevItems) =>
+      prevItems.filter((item) => item.productId !== id)
+    );
   };
 
   const moveToCart = (product) => {
-    removeFromWishlist(product.id);
+    removeFromWishlist(product.productId);
     addToCart({ ...product, quantity: 1 });
   };
 

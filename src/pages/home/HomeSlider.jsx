@@ -1,7 +1,9 @@
 import "./homeSlider.css";
+
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+
 import Slide1 from "../../assets/images/banner1.jpg";
 import Slide2 from "../../assets/images/banner2.jpg";
 import Slide3 from "../../assets/images/banner3.jpg";

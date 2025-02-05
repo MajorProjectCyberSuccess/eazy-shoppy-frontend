@@ -11,8 +11,10 @@ export const useProductContext = () => useContext(ProductContext);
 // Create the provider component
 export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
+  const [images, setImages] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   // Fetch all products
   const fetchAllProducts = async () => {
@@ -20,13 +22,46 @@ export const ProductProvider = ({ children }) => {
       const response = await axios.get(
         "http://localhost:8000/api/product/getAllProducts"
       );
-      setProducts(response.data.data); // Assuming the data is nested under 'data'
+      setProducts(response.data.data);
       setLoading(false);
     } catch (err) {
       setError(err.message);
       setLoading(false);
     }
   };
+
+  // Fetch product image
+  const fetchProductImage = async (productId) => {
+    try {
+      const res = await fetch(
+        `http://localhost:8000/api/product/images/${productId}`
+      );
+      if (!res.ok) {
+        throw new Error("Image not found");
+      }
+      const imageBlob = await res.blob();
+      const imageObjectURL = URL.createObjectURL(imageBlob);
+      setImages((prev) => ({
+        ...prev,
+        [productId]: imageObjectURL,
+      }));
+    } catch (error) {
+      console.error("Error fetching image:", error);
+      setImages((prev) => ({
+        ...prev,
+        [productId]: null,
+      }));
+    }
+  };
+
+  // Fetch images for all products after the products are fetched
+  // useEffect(() => {
+  //   if (products.length > 0) {
+  //     products.forEach((product) => {
+  //       fetchProductImage(product.productId);
+  //     });
+  //   }
+  // }, [products]);
 
   // Fetch product by ID
   const fetchProductById = async (id) => {
@@ -37,11 +72,25 @@ export const ProductProvider = ({ children }) => {
           headers: { id },
         }
       );
-      return response.data.data; // Assuming the data is nested under 'data'
+      return response.data.data;
     } catch (err) {
       setError(err.message);
     }
   };
+
+  // Handle category change
+  const handleCategoryChange = (categoryId) => {
+    setSelectedCategory(categoryId);
+  };
+
+  // Fetch all products and their images only once on component mount
+  useEffect(() => {
+    if (selectedCategory) {
+      fetchProductsByCategoryId(selectedCategory);
+    } else {
+      fetchAllProducts();
+    }
+  }, [selectedCategory]);
 
   // Fetch products by category ID
   const fetchProductsByCategoryId = async (categoryId) => {
@@ -52,7 +101,7 @@ export const ProductProvider = ({ children }) => {
           headers: { categoryId },
         }
       );
-      return response.data.data; // Assuming the data is nested under 'data'
+      setProducts(response.data.data);
     } catch (err) {
       setError(err.message);
     }
@@ -67,7 +116,7 @@ export const ProductProvider = ({ children }) => {
           headers: { name },
         }
       );
-      return response.data.data; // Assuming the data is nested under 'data'
+      return response.data.data;
     } catch (err) {
       setError(err.message);
     }
@@ -95,18 +144,6 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
-  // Fetch product image
-  const fetchProductImage = async (productId) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8000/api/product/images/${productId}`
-      );
-      return response.data;
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
   // Create product
   const createProduct = async (productRequestWrapper) => {
     try {
@@ -114,21 +151,17 @@ export const ProductProvider = ({ children }) => {
         "http://localhost:8000/api/product/create",
         productRequestWrapper
       );
-      return response.data.data; // Assuming the data is nested under 'data'
+      return response.data.data;
     } catch (err) {
       setError(err.message);
     }
   };
 
-  // Effect to fetch all products on component mount
-  useEffect(() => {
-    fetchAllProducts();
-  }, []);
-
   return (
     <ProductContext.Provider
       value={{
         products,
+        images,
         loading,
         error,
         fetchAllProducts,
@@ -138,6 +171,8 @@ export const ProductProvider = ({ children }) => {
         uploadProductImage,
         fetchProductImage,
         createProduct,
+        selectedCategory,
+        handleCategoryChange,
       }}
     >
       {children}

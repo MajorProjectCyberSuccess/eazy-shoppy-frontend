@@ -1,5 +1,5 @@
-import { useState } from "react";
 import "./select.css";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import ClickAwayListener from "react-click-away-listener";
 import { IoIosArrowDown } from "react-icons/io";

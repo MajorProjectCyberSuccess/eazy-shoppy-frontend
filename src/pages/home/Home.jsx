@@ -1,12 +1,18 @@
+import "./Home.css";
+import { useEffect, useState } from "react";
+
+import { Link } from "react-router-dom";
+
 import { useCategories } from "../../utility/CategoryContext";
 import { useProductContext } from "../../utility/ProductContext"; // Ensure this path is correct
-import { useEffect } from "react";
-import "./Home.css";
+
 import Slider from "react-slick";
+
 import Banner from "../../components/Banners/Banner";
 import CatSlider from "../../components/CatSlider/CatSlider";
 import HomeSlider from "./HomeSlider";
 import Product from "../../components/Product/Product";
+
 import Banner1 from "./images/banner.jpg";
 import Banner2 from "./images/banner1.jpg";
 import Banner3 from "./images/banner2.jpg";
@@ -18,17 +24,15 @@ import TopProduct2 from "./images/toppro2.jpg";
 import TopProduct3 from "./images/toppro3.jpg";
 
 const Home = () => {
-  const {
-    parentCategories,
-    loading: catLoading,
-    error: catError,
-  } = useCategories();
+  const { categories, loading: catLoading, error: catError } = useCategories();
   const {
     products,
     loading: prodLoading,
     error: prodError,
     fetchAllProducts,
   } = useProductContext();
+
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   // Fetch all products when the component mounts
   useEffect(() => {
@@ -43,6 +47,12 @@ const Home = () => {
   if (catError || prodError) {
     return <div>Error: {catError?.message || prodError}</div>;
   }
+
+  // Filter products based on selected category
+  const filteredProducts =
+    selectedCategory === "All"
+      ? products
+      : products.filter((product) => product.categoryName === selectedCategory);
 
   // Slider settings
   const settings = {
@@ -94,21 +104,41 @@ const Home = () => {
           <div className="d-flex align-items-center">
             <h2 className="hd mb-0 mt-0 mx-1">Popular Products</h2>
             <ul className="list list-inline ml-auto filterTab mb-0">
+              {/* All Category Filter */}
+              <li className="list-inline-item">
+                <a
+                  className={`cursor ${
+                    selectedCategory === "All" ? "active" : ""
+                  }`}
+                  onClick={() => setSelectedCategory("All")}
+                >
+                  All
+                </a>
+              </li>
               {/* Dynamically render parent categories */}
-              {parentCategories.slice(0, 7).map((category) => (
+              {categories.slice(0, 7).map((category) => (
                 <li className="list-inline-item" key={category.id}>
-                  <a className="cursor">{category.name}</a>
+                  <Link
+                    className="cursor"
+                    onClick={() => setSelectedCategory(category.name)}
+                  >
+                    {category.name}
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
           <div className="row productRow pt-2">
-            {products.map((product) => (
-              <div className="item" key={product.productId}>
-                <Product product={product} />
-              </div>
-            ))}
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map((product) => (
+                <div className="item" key={product.productId}>
+                  <Product product={product} />
+                </div>
+              ))
+            ) : (
+              <div>No products available in this category.</div>
+            )}
           </div>
         </div>
       </section>
@@ -169,7 +199,7 @@ const Home = () => {
             <div className="col-md-9">
               <Slider {...settings} className="prodSlider">
                 {products.map((product) => (
-                  <div className="item" key={product.id}>
+                  <div className="item" key={product.productId}>
                     <Product product={product} />
                   </div>
                 ))}

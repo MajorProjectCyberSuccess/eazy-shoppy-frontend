@@ -1,7 +1,7 @@
-import { useRef } from "react";
 import "./NewsLetter.css";
-import BannerImage from "../../assets/images/bannerximage.png";
+import { useRef } from "react";
 import { TbSend } from "react-icons/tb";
+import BannerImage from "../../assets/images/bannerximage.png";
 
 const NewsLetter = () => {
   const inputRef = useRef(null);

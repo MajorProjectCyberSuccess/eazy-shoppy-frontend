@@ -1,6 +1,7 @@
 import "./CheckOut.css";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Add this for navigation
+import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 
 import TextField from "@mui/material/TextField";
@@ -9,7 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
-import CircularProgress from "@mui/material/CircularProgress"; // Add this for loading spinner
+import CircularProgress from "@mui/material/CircularProgress";
 
 const CheckOut = () => {
   const [countries, setCountries] = useState([]);
@@ -28,8 +29,8 @@ const CheckOut = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [checkoutLoading, setCheckoutLoading] = useState(false); // Add this for checkout loading state
-  const navigate = useNavigate(); // Add this for navigation
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const navigate = useNavigate();
 
   // Fetch countries
   const getCountry = async (url) => {

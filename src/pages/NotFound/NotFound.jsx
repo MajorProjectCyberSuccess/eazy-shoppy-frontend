@@ -1,7 +1,7 @@
-import { Button } from "@mui/material";
 import "./NotFound.css";
-import Nfound from "./images/404-error.png";
 import { Link } from "react-router-dom";
+import { Button } from "@mui/material";
+import Nfound from "./images/404-error.png";
 
 const NotFound = () => {
   return (

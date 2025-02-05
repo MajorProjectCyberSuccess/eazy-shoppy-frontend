@@ -1,7 +1,7 @@
 import "./MyList.css";
-import PropTypes from "prop-types";
 import { useContext } from "react";
 import { CartContext } from "../../utility/CartContext";
+import PropTypes from "prop-types";
 
 const MyList = () => {
   const { wishlistItems, removeFromWishlist, moveToCart } =
@@ -27,11 +27,11 @@ const MyList = () => {
             </thead>
             <tbody>
               {wishlistItems.map((item) => (
-                <tr key={item.id}>
+                <tr key={item.productId}>
                   <td className="d-flex align-items-center">
                     <img
                       src={item.image}
-                      alt={item.tile}
+                      alt={item.name}
                       style={{
                         width: "80px",
                         height: "80px",
@@ -42,21 +42,21 @@ const MyList = () => {
                     />
                     <div>
                       <p className="mb-1">
-                        {item && item.title
-                          ? item.title.length > 40
-                            ? item.title.substr(0, 40) + "..."
-                            : item.title
+                        {item && item.name
+                          ? item.name.length > 40
+                            ? item.name.substr(0, 40) + "..."
+                            : item.name
                           : "No Name"}
                       </p>
                       <div className="d-flex align-items-center">
                         <span className="text-warning me-1">
-                          {"★".repeat(item.rating)}
-                          {"☆".repeat(5 - item.rating)}
+                          {"★".repeat(item.ratings)}
+                          {"☆".repeat(5 - item.ratings)}
                         </span>
                       </div>
                     </div>
                   </td>
-                  <td>Rs: {item.price}</td>
+                  <td>Rs: {item.discountedPrice}</td>
                   <td>
                     <button
                       className="btn btn-outline-primary"

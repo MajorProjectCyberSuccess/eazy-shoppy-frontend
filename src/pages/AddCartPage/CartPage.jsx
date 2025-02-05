@@ -1,7 +1,10 @@
 import "./CartPage.css";
+
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../utility/CartContext";
+
 import { Link } from "react-router-dom";
+
 import { AiFillDelete } from "react-icons/ai";
 
 const CartPage = () => {

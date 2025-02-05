@@ -1,44 +1,26 @@
-// import Imgb1 from "./images/imgb1.jpg";
-import { useContext } from "react";
-
 import "./Product.css";
+
+import { useEffect, useContext } from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Rating from "@mui/material/Rating";
 import Tooltip from "@mui/material/Tooltip";
-import { Link } from "react-router-dom";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import { GrView } from "react-icons/gr";
 import { FaRegHeart } from "react-icons/fa";
-
 import { CartContext } from "../../utility/CartContext";
+import { useProductContext } from "../../utility/ProductContext";
 
 const Product = ({ product }) => {
   const { addToCart, addToWishlist } = useContext(CartContext);
+  const { images, fetchProductImage } = useProductContext();
 
-  // const handleAddToCart = async () => {
-  //   const sessionId = localStorage.getItem("sessionId");
-  //   if (!sessionId) {
-  //     toast.error("Please log in first to add products to your cart."); // Show toast
-  //     navigate("/signin"); // Redirect to the SignIn page
-  //     return;
-  //   }
-
-  //   try {
-  //     await axios.post(
-  //       "http://localhost:8000/api/cart/add",
-  //       { productId: product.id },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${sessionId}`,
-  //         },
-  //       }
-  //     );
-  //     alert("Product added to cart!");
-  //   } catch (error) {
-  //     console.error("Error adding to cart:", error);
-  //   }
-  // };
+  useEffect(() => {
+    if (!images[product.productId]) {
+      fetchProductImage(product.productId);
+    }
+  }, [product.productId, fetchProductImage, images]);
 
   const handleAddToCart = () => {
     const productToAdd = {
@@ -46,11 +28,9 @@ const Product = ({ product }) => {
       name: product.name,
       discountedPrice: product.discountedPrice,
       quantity: 1,
-      image: product.image,
+      image: images[product.productId] || "no image",
     };
-    // console.log("productToAdd", productToAdd);
     addToCart(productToAdd);
-    alert(`${product.name} added to cart!`);
   };
 
   return (
@@ -61,7 +41,7 @@ const Product = ({ product }) => {
 
       <div className="imgWrapper">
         <img
-          src={product.image}
+          src={images[product.productId] || "no image"}
           alt={product.name}
           className="w-100 transition"
         />
@@ -90,11 +70,11 @@ const Product = ({ product }) => {
       </div>
 
       <div className="info">
-        <span className="d-block catName">{product.category}</span>
+        <span className="d-block catName">{product.categoryName}</span>
         <h4 className="title">
           <Link to={`/shop/product/details/${product.productId}`}>
             {product.name.length > 35
-              ? product.name.substr(0, 35) + "..."
+              ? `${product.name.substr(0, 35)}...`
               : product.name}
           </Link>
         </h4>
@@ -115,9 +95,9 @@ const Product = ({ product }) => {
             <span className="price text-g font-weight-bold">
               ₹{product.discountedPrice}
             </span>
-            {product.originalPrice && (
+            {/* {product.originalPrice && (
               <span className="oldPrice">${product.originalPrice}</span>
-            )}
+            )} */}
           </div>
           <button className="text-g transition" onClick={handleAddToCart}>
             <PiShoppingCartSimpleBold
@@ -134,18 +114,15 @@ const Product = ({ product }) => {
 
 Product.propTypes = {
   product: PropTypes.shape({
-    productId: PropTypes.number,
+    productId: PropTypes.number.isRequired,
     tag: PropTypes.string,
-    image: PropTypes.string.isRequired,
-    category: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    ratings: PropTypes.number.isRequired,
-    brand: PropTypes.string.isRequired,
-    discountedPrice: PropTypes.number.isRequired,
+    categoryName: PropTypes.string,
+    name: PropTypes.string,
+    ratings: PropTypes.number,
+    brand: PropTypes.string,
+    discountedPrice: PropTypes.number,
     originalPrice: PropTypes.number,
-    productLink: PropTypes.string.isRequired,
   }).isRequired,
-  onAddToCart: PropTypes.func,
 };
 
 export default Product;
