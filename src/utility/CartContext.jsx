@@ -30,7 +30,7 @@ export const CartProvider = ({ children }) => {
             },
           }
         );
-        setCartItems(response.data);
+        setCartItems(response.data.data);
       } catch (error) {
         console.error("Error fetching cart items:", error);
         setError("Failed to fetch cart items.");
@@ -65,17 +65,18 @@ export const CartProvider = ({ children }) => {
           },
         }
       );
+      alert("Item added");
 
       // Fetch updated cart items
-      const response = await axios.get(
-        "http://localhost:8000/api/cart/getAllCarts",
-        {
-          headers: {
-            Authorization: `Bearer ${userId}`,
-          },
-        }
-      );
-      setCartItems(response.data);
+      // const response = await axios.get(
+      //   "http://localhost:8000/api/cart/getAllCarts",
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${userId}`,
+      //     },
+      //   }
+      // );
+      // setCartItems(response.data.data);
     } catch (error) {
       console.error("Error adding to cart:", error);
       setError("Failed to add item to cart.");
@@ -116,16 +117,16 @@ export const CartProvider = ({ children }) => {
         }
       );
 
-      // Fetch updated cart items
-      const response = await axios.get(
-        "http://localhost:8000/api/cart/getAllCarts",
-        {
-          headers: {
-            Authorization: `Bearer ${userId}`,
-          },
-        }
-      );
-      setCartItems(response.data);
+      // // Fetch updated cart items
+      // const response = await axios.get(
+      //   "http://localhost:8000/api/cart/getAllCarts",
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${userId}`,
+      //     },
+      //   }
+      // );
+      // setCartItems(response.data);
     } catch (error) {
       console.error("Error updating cart item:", error);
       setError("Failed to update item quantity.");

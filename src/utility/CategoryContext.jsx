@@ -20,7 +20,7 @@ export const CategoryProvider = ({ children }) => {
         );
 
         const allCategories = response.data.data;
-        console.log(allCategories);
+        // console.log(allCategories);
 
         // Separate parent categories and subcategories
         const parentCategories = allCategories.filter(

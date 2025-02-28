@@ -40,7 +40,11 @@ const Header = () => {
   // Handle logout
   const handleLogout = () => {
     setIsOpenDropDown(!isOpenDropDown);
-    localStorage.removeItem("userId"); // Clear the session
+    localStorage.removeItem("userId");
+    localStorage.removeItem("eazyShoppyWishlist");
+    localStorage.removeItem("eazyShoppyCart");
+    localStorage.removeItem("user");
+
     navigate("/login");
   };
 

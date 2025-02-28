@@ -18,6 +18,15 @@ const Listing = () => {
     setSelectedCategory(category.name);
   };
 
+  // const handleCategorySelect = (category) => {
+  //   if (category === "All Products") {
+  //     fetchAllProducts();
+  //     setSelectedCategory(null);
+  //   } else {
+  //     fetchProductsByCategory(category);
+  //   }
+  // };
+
   // const { id } = useParams();
   // const [category, setCategory] = useState(null);
   // const [products, setProducts] = useState([]);
@@ -58,7 +67,10 @@ const Listing = () => {
   const breadcrumbItems = [
     { name: "Home", path: "/" },
     { name: "Products", path: "/shop" },
-    { name: selectedCategory, path: `/shop/${selectedCategory}` },
+    {
+      name: selectedCategory || `All Products`,
+      path: `/shop/${selectedCategory || ""}`,
+    },
   ];
 
   const products = [
@@ -203,7 +215,7 @@ const Listing = () => {
       <div className="container-fluid">
         {/* Breadcrumb Section */}
         <div className="breadcrumbWrap">
-          <h1>{selectedCategory}</h1>
+          <h1>{selectedCategory || "Products"}</h1>
           <Breadcrumb breadcrumbItems={breadcrumbItems} />
         </div>
 
@@ -237,11 +249,15 @@ const Listing = () => {
             </div>
 
             <div className="products-container">
-              {filteredProducts.map((product) => (
-                <div className="item" key={product.id}>
-                  <Product product={product} />
-                </div>
-              ))}
+              {filteredProducts.length > 0 ? (
+                filteredProducts.map((product) => (
+                  <div className="item" key={product.id}>
+                    <Product product={product} />
+                  </div>
+                ))
+              ) : (
+                <p>No products found.</p>
+              )}
             </div>
           </div>
         </div>

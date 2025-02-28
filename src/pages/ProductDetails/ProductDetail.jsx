@@ -2,12 +2,12 @@ import { useState, useContext, useEffect } from "react";
 
 import "./ProductDetail.css";
 // import bhakar1 from "./images/bhakar1.jpg";
-import bhakar2 from "./images/bhakar2.jpg";
-import bhakar3 from "./images/bhakar3.jpg";
-import bhakar4 from "./images/bhakar4.jpg";
-import bhakar5 from "./images/bhakar5.jpg";
+// import bhakar2 from "./images/bhakar2.jpg";
+// import bhakar3 from "./images/bhakar3.jpg";
+// import bhakar4 from "./images/bhakar4.jpg";
+// import bhakar5 from "./images/bhakar5.jpg";
 
-// import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { IoIosArrowUp } from "react-icons/io";
 import { IoIosArrowDown } from "react-icons/io";
@@ -21,45 +21,34 @@ import Rating from "@mui/material/Rating";
 
 import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
+
 import Product from "../../components/Product/Product";
 import { CartContext } from "../../utility/CartContext";
+import { useProductContext } from "../../utility/ProductContext";
 
 const ProductDetail = () => {
+  const { id } = useParams();
   const { addToCart, addToWishlist } = useContext(CartContext);
+  const { images, fetchProductImage, fetchProductById } = useProductContext();
+  const [product, setProduct] = useState(null);
   const [relatedProducts] = useState([]); // Related products
 
-  // const { id } = useParams();
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchProductById(id);
+      setProduct(data);
+      if (data) {
+        fetchProductImage(data.productId);
+      }
+    };
+    fetchData();
+  }, [id, fetchProductById, fetchProductImage]);
 
   // // Fetch product details using the id
   // const [product, setProduct] = useState(null);
   // const [relatedProducts, setRelatedProducts] = useState([]); // Related products
   // const [isLoading, setIsLoading] = useState(true);
   // const [error, setError] = useState("");
-
-  // useEffect(() => {
-  //   const fetchProductDetails = async () => {
-  //   try {
-  //     // Fetch the current product details
-  //     const productResponse = await axios.get(
-  //       `http://localhost:8000/api/products/${id}`
-  //     );
-  //     setProduct(productResponse.data);
-
-  //     // Fetch related products based on the category of the current product
-  //     const relatedResponse = await axios.get(
-  //       `http://localhost:8000/api/products?category=${productResponse.data.category}&exclude=${id}`
-  //     );
-  //     setRelatedProducts(relatedResponse.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //     setError("Failed to fetch product details.");
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
-  //   fetchProductDetails();
-  // }, [id]);
 
   // if (isLoading) {
   //   return <div>Loading...</div>;
@@ -74,35 +63,35 @@ const ProductDetail = () => {
   // }
 
   // Static product data array
-  const productData = {
-    id: 1,
-    title:
-      "Dhawak Gujrati Mini Bhakarwadi 500 gms (Crunchy and Tasty) Jar Pack",
-    brand: "EazyShoppy",
-    rating: 3.5,
-    reviews: 32,
-    price: 219,
-    originalPrice: 599,
-    discount: "63% off",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni sed eum exercitationem! Iusto soluta totam sunt repellat nam numquam porro perspiciatis odio obcaecati deleniti ipsa quis, hic, minima dolorem. A.",
-    sizes: ["50g", "60g", "80g", "100g", "150g"],
-    images: [
-      {
-        src: "https://www.jiomart.com/images/product/original/rviklciklo/jagdish-farshan-bhakharwadi-250-gm-pack-of-2-product-images-orviklciklo-p603850635-0-202308130006.jpg?im=Resize=(360,360)",
-        zoomSrc:
-          "https://www.jiomart.com/images/product/original/rviklciklo/jagdish-farshan-bhakharwadi-250-gm-pack-of-2-product-images-orviklciklo-p603850635-0-202308130006.jpg?im=Resize=(360,360)",
-      },
-      { src: bhakar2, zoomSrc: bhakar2 },
-      { src: bhakar3, zoomSrc: bhakar3 },
-      { src: bhakar4, zoomSrc: bhakar4 },
-      { src: bhakar5, zoomSrc: bhakar5 },
-    ],
-  };
+  // const productData = {
+  //   id: 1,
+  //   title:
+  //     "Dhawak Gujrati Mini Bhakarwadi 500 gms (Crunchy and Tasty) Jar Pack",
+  //   brand: "EazyShoppy",
+  //   rating: 3.5,
+  //   reviews: 32,
+  //   price: 219,
+  //   originalPrice: 599,
+  //   discount: "63% off",
+  //   description:
+  //     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni sed eum exercitationem! Iusto soluta totam sunt repellat nam numquam porro perspiciatis odio obcaecati deleniti ipsa quis, hic, minima dolorem. A.",
+  //   sizes: ["50g", "60g", "80g", "100g", "150g"],
+  //   images: [
+  //     {
+  //       src: "https://www.jiomart.com/images/product/original/rviklciklo/jagdish-farshan-bhakharwadi-250-gm-pack-of-2-product-images-orviklciklo-p603850635-0-202308130006.jpg?im=Resize=(360,360)",
+  //       zoomSrc:
+  //         "https://www.jiomart.com/images/product/original/rviklciklo/jagdish-farshan-bhakharwadi-250-gm-pack-of-2-product-images-orviklciklo-p603850635-0-202308130006.jpg?im=Resize=(360,360)",
+  //     },
+  //     { src: bhakar2, zoomSrc: bhakar2 },
+  //     { src: bhakar3, zoomSrc: bhakar3 },
+  //     { src: bhakar4, zoomSrc: bhakar4 },
+  //     { src: bhakar5, zoomSrc: bhakar5 },
+  //   ],
+  // };
 
   // State hooks
-  const [selectedImage, setSelectedImage] = useState(productData.images[0]);
-  const [activeSize, setActiveSize] = useState(0);
+  // const [selectedImage, setSelectedImage] = useState(productData.images[0]);
+  // const [activeSize, setActiveSize] = useState(0);
   const [inputValue, setInputValue] = useState(1);
   const [liked, setLiked] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
@@ -178,54 +167,19 @@ const ProductDetail = () => {
     setFormData({ name: "", rating: 0, comment: "" });
   };
 
-  //   const handleAddToCart = async () => {
-  //   const sessionId = localStorage.getItem("sessionId");
-  //   if (!sessionId) {
-  //     alert("Please log in first to add products to your cart."); // Show toast
-  //     navigate("/signin"); // Redirect to the SignIn page
-  //     return;
-  //   }
-
-  //   try {
-  //     await axios.post(
-  //       "http://localhost:8000/api/cart/add",
-  //       { productId: product.id },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${sessionId}`,
-  //         },
-  //       }
-  //     );
-  //     alert("Product added to cart!");
-  //   } catch (error) {
-  //     console.error("Error adding to cart:", error);
-  //   }
-  // };
-
   // add to cart
   const handleAddToCart = () => {
-    const cartProducts = {
-      id: productData.id,
-      name: productData.title,
-      price: productData.price,
-      image: productData.images[0].src,
-      quantity: inputValue,
+    const productToAdd = {
+      productId: product.productId,
+      name: product.name,
+      discountedPrice: product.discountedPrice,
+      quantity: 1,
+      image: images[product.productId] || "no image",
     };
-    addToCart(cartProducts);
+    addToCart(productToAdd);
   };
 
-  const product = {
-    image: bhakar5,
-    category: "Snacks",
-    title: "Haldirams Namkeen - Aloo Bhujia, 200G",
-    rating: 4.5,
-    brand: "EazyShoppy",
-    price: 255,
-    oldPrice: 399,
-    tag: "hot",
-    productLink: "/shop/product/details",
-    onAddToCart: handleAddToCart,
-  };
+  if (!product) return <p>Loading...</p>;
 
   return (
     <>
@@ -240,9 +194,9 @@ const ProductDetail = () => {
                 <Link to="/shop">Product</Link>
               </li>
               <li>
-                {productData.title.length > 50
-                  ? productData.title.substr(0, 50) + "..."
-                  : productData.title}
+                {product.name.length > 50
+                  ? product.title.substr(0, 50) + "..."
+                  : product.title}
               </li>
             </ul>
           </div>
@@ -253,14 +207,14 @@ const ProductDetail = () => {
             <div className="col-md-5 part1">
               <div className="productZoom">
                 <InnerImageZoom
-                  src={selectedImage.src}
-                  zoomSrc={selectedImage.zoomSrc}
+                  src={images[product.productId]}
+                  zoomSrc={images[product.productId]}
                   zoomType="hover"
                   className="img-fluid"
                 />
               </div>
               <div className="thumbnail-section d-flex justify-content-center gap-3">
-                {productData.images.map((image, index) => (
+                {/* {product.images.map((image, index) => (
                   <div
                     key={index}
                     className={`thumbnail ${
@@ -274,41 +228,43 @@ const ProductDetail = () => {
                       className="img-fluid"
                     />
                   </div>
-                ))}
+                ))} */}
               </div>
             </div>
             {/* Product Zoom Section start */}
 
             {/* Product Info Section start */}
             <div className="col-md-7 part2 productInfo mb-0">
-              <h1>{productData.title}</h1>
+              <h1>{product.name}</h1>
               <span className="brand d-block text-g">
-                by <Link className="text-g">{productData.brand}</Link>
+                by <Link className="text-g">{product.brand}</Link>
               </span>
               <div className="d-flex align-items-center">
                 <Stack spacing={1}>
                   <Rating
                     className="rating"
                     name="half-rating-read"
-                    defaultValue={productData.rating}
+                    defaultValue={product.ratings}
                     precision={0.5}
                     readOnly
                   />
                 </Stack>
-                <span>&nbsp; ({productData.reviews} reviews)</span>
+                <span>&nbsp; ({product.reviews} reviews)</span>
               </div>
               <div className="priceSec d-flex align-items-center mb-3">
-                <span className="text-g priceLarge">₹{productData.price}</span>
+                <span className="text-g priceLarge">
+                  ₹{product.discountedPrice}
+                </span>
                 <div className="ml-2 d-flex flex-column">
-                  <span className="text-org">{productData.discount}</span>
-                  <span className="olPrice">₹{productData.originalPrice}</span>
+                  <span className="text-org">{product.discount}</span>
+                  <span className="olPrice">₹{product.originalPrice}</span>
                 </div>
               </div>
-              <p>{productData.description}</p>
+              <p>{product.productDescription}</p>
               <div className="productSize d-flex align-items-center">
                 <span>Size / Weight:</span>
                 <ul className="list list-inline mb-0">
-                  {productData.sizes.map((size, index) => (
+                  {/* {product.sizes.map((size, index) => (
                     <li className="list-inline-item" key={index}>
                       <a
                         className={`tag ${
@@ -319,7 +275,7 @@ const ProductDetail = () => {
                         {size}
                       </a>
                     </li>
-                  ))}
+                  ))} */}
                 </ul>
               </div>
 

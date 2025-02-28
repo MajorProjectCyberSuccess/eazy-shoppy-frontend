@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/api/order"; // Replace with your backend URL
+const API_URL = "http://localhost:8000/api/order";
 
 const fetchOrdersByUserId = async (userId) => {
   try {

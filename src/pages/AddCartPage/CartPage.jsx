@@ -16,6 +16,7 @@ const CartPage = () => {
   useEffect(() => {
     if (cartItems) {
       setLocalCartItems(cartItems);
+      console.log(cartItems);
     }
   }, [cartItems]);
 
