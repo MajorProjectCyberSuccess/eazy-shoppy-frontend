@@ -26,7 +26,7 @@ export const CartProvider = ({ children }) => {
           "http://localhost:8000/api/cart/getAllCarts",
           {
             headers: {
-              Authorization: `Bearer ${userId}`,
+              userId: userId,
             },
           }
         );
@@ -61,22 +61,22 @@ export const CartProvider = ({ children }) => {
         cartRequestWrapper,
         {
           headers: {
-            Authorization: `Bearer ${userId}`,
+            userId: userId,
           },
         }
       );
       alert("Item added");
 
       // Fetch updated cart items
-      // const response = await axios.get(
-      //   "http://localhost:8000/api/cart/getAllCarts",
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${userId}`,
-      //     },
-      //   }
-      // );
-      // setCartItems(response.data.data);
+      const response = await axios.get(
+        "http://localhost:8000/api/cart/getAllCarts",
+        {
+          headers: {
+            userId: userId,
+          },
+        }
+      );
+      setCartItems(response.data.data);
     } catch (error) {
       console.error("Error adding to cart:", error);
       setError("Failed to add item to cart.");
@@ -102,31 +102,33 @@ export const CartProvider = ({ children }) => {
         action === "increment"
           ? item.quantity + 1
           : Math.max(1, item.quantity - 1);
+
       const cartRequestWrapper = {
         productId: id,
         quantity: newQuantity,
       };
 
-      await axios.post(
-        "http://localhost:8000/api/cart/create",
+      // Use PUT request for updating cart quantity
+      await axios.put(
+        "http://localhost:8000/api/cart/update",
         cartRequestWrapper,
         {
           headers: {
-            Authorization: `Bearer ${userId}`,
+            userId: userId,
           },
         }
       );
 
-      // // Fetch updated cart items
-      // const response = await axios.get(
-      //   "http://localhost:8000/api/cart/getAllCarts",
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${userId}`,
-      //     },
-      //   }
-      // );
-      // setCartItems(response.data);
+      // Fetch updated cart items after updating quantity
+      const response = await axios.get(
+        "http://localhost:8000/api/cart/getAllCarts",
+        {
+          headers: {
+            userId: userId,
+          },
+        }
+      );
+      setCartItems(response.data);
     } catch (error) {
       console.error("Error updating cart item:", error);
       setError("Failed to update item quantity.");
@@ -142,18 +144,14 @@ export const CartProvider = ({ children }) => {
     }
 
     try {
-      await axios.delete(`http://localhost:8000/api/cart/delete/${id}`, {
-        headers: {
-          Authorization: `Bearer ${userId}`,
-        },
-      });
+      await axios.delete(`http://localhost:8000/api/cart/delete/${id}`);
 
       // Fetch updated cart items
       const response = await axios.get(
         "http://localhost:8000/api/cart/getAllCarts",
         {
           headers: {
-            Authorization: `Bearer ${userId}`,
+            userId: userId,
           },
         }
       );

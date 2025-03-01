@@ -2,6 +2,7 @@ import "./CartPage.css";
 
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../utility/CartContext";
+import { useProductContext } from "../../utility/ProductContext";
 
 import { Link } from "react-router-dom";
 
@@ -10,26 +11,42 @@ import { AiFillDelete } from "react-icons/ai";
 const CartPage = () => {
   const { cartItems, updateQuantity, removeFromCart, isLoading, error } =
     useContext(CartContext);
-  const [localCartItems, setLocalCartItems] = useState([]);
+  const { images, fetchProductImage, fetchProductById } = useProductContext();
+  const [cartDetails, setCartDetails] = useState([]);
 
   // Sync local state with context cartItems
   useEffect(() => {
     if (cartItems) {
-      setLocalCartItems(cartItems);
+      setCartDetails(cartItems);
       console.log(cartItems);
     }
   }, [cartItems]);
 
+  // Fetch product details for each cart item
+  useEffect(() => {
+    const fetchDetails = async () => {
+      if (cartItems.length > 0) {
+        const updatedCart = await Promise.all(
+          cartItems.map(async (item) => {
+            const productData = await fetchProductById(item.productId); // Fetch product details
+            return { ...item, ...productData }; // Merge cart item with product details
+          })
+        );
+        setCartDetails(updatedCart);
+      }
+    };
+    fetchDetails();
+  }, [cartItems, fetchProductById]);
+
+  // Calculate total price
   const calculateTotal = () =>
-    localCartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    cartDetails.reduce(
+      (acc, item) => acc + item.totalAmount * item.quantity,
+      0
+    );
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <>
@@ -47,7 +64,7 @@ const CartPage = () => {
       <div className="cart-page">
         <h2>Your Cart</h2>
         <div className="container-fluid">
-          <p>There are {localCartItems.length} products in your cart</p>
+          <p>There are {cartDetails.length} products in your cart</p>
           <div className="row">
             <div className="col-md-9">
               <table className="cart-table">
@@ -61,7 +78,7 @@ const CartPage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {localCartItems.map((item, index) => (
+                  {cartDetails.map((item, index) => (
                     <tr key={item.id || index}>
                       <td>
                         <div className="d-flex align-items-center">
@@ -75,21 +92,25 @@ const CartPage = () => {
                           </p>
                         </div>
                       </td>
-                      <td>₹{item.price}</td>
+                      <td>₹{item.totalAmount}</td>
                       <td>
                         <button
-                          onClick={() => updateQuantity(item.id, "decrement")}
+                          onClick={() =>
+                            updateQuantity(item.productId, "decrement")
+                          }
                         >
                           -
                         </button>
                         {item.quantity}
                         <button
-                          onClick={() => updateQuantity(item.id, "increment")}
+                          onClick={() =>
+                            updateQuantity(item.productId, "increment")
+                          }
                         >
                           +
                         </button>
                       </td>
-                      <td>₹{(item.price * item.quantity).toFixed(2)}</td>
+                      <td>₹{(item.totalAmount * item.quantity).toFixed(2)}</td>
                       <td>
                         <button
                           onClick={() => removeFromCart(item.id)}

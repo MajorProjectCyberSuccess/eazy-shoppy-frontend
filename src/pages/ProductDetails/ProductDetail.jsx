@@ -44,51 +44,6 @@ const ProductDetail = () => {
     fetchData();
   }, [id, fetchProductById, fetchProductImage]);
 
-  // // Fetch product details using the id
-  // const [product, setProduct] = useState(null);
-  // const [relatedProducts, setRelatedProducts] = useState([]); // Related products
-  // const [isLoading, setIsLoading] = useState(true);
-  // const [error, setError] = useState("");
-
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
-
-  // if (error) {
-  //   return <div>{error}</div>;
-  // }
-
-  // if (!product) {
-  //   return <div>Product not found.</div>;
-  // }
-
-  // Static product data array
-  // const productData = {
-  //   id: 1,
-  //   title:
-  //     "Dhawak Gujrati Mini Bhakarwadi 500 gms (Crunchy and Tasty) Jar Pack",
-  //   brand: "EazyShoppy",
-  //   rating: 3.5,
-  //   reviews: 32,
-  //   price: 219,
-  //   originalPrice: 599,
-  //   discount: "63% off",
-  //   description:
-  //     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni sed eum exercitationem! Iusto soluta totam sunt repellat nam numquam porro perspiciatis odio obcaecati deleniti ipsa quis, hic, minima dolorem. A.",
-  //   sizes: ["50g", "60g", "80g", "100g", "150g"],
-  //   images: [
-  //     {
-  //       src: "https://www.jiomart.com/images/product/original/rviklciklo/jagdish-farshan-bhakharwadi-250-gm-pack-of-2-product-images-orviklciklo-p603850635-0-202308130006.jpg?im=Resize=(360,360)",
-  //       zoomSrc:
-  //         "https://www.jiomart.com/images/product/original/rviklciklo/jagdish-farshan-bhakharwadi-250-gm-pack-of-2-product-images-orviklciklo-p603850635-0-202308130006.jpg?im=Resize=(360,360)",
-  //     },
-  //     { src: bhakar2, zoomSrc: bhakar2 },
-  //     { src: bhakar3, zoomSrc: bhakar3 },
-  //     { src: bhakar4, zoomSrc: bhakar4 },
-  //     { src: bhakar5, zoomSrc: bhakar5 },
-  //   ],
-  // };
-
   // State hooks
   // const [selectedImage, setSelectedImage] = useState(productData.images[0]);
   // const [activeSize, setActiveSize] = useState(0);
@@ -195,8 +150,8 @@ const ProductDetail = () => {
               </li>
               <li>
                 {product.name.length > 50
-                  ? product.title.substr(0, 50) + "..."
-                  : product.title}
+                  ? product.name.substr(0, 50) + "..."
+                  : product.name}
               </li>
             </ul>
           </div>
