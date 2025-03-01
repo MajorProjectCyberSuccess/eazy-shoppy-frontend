@@ -68,6 +68,17 @@ header .headerSearch .searchIcon:hover {
   cursor: pointer;
 }
 
+header .searchBarResults {
+  /* display: none; */
+  position: absolute;
+  z-index: 1001;
+  top: 40px;
+  left: 270px;
+  width: 600px;
+  height: auto;
+  max-height: 100px;
+}
+
 header .countryWrapper .selectDrop {
   width: 200px !important;
   height: 45px;

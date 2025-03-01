@@ -20,15 +20,38 @@ import {
   CiLogout,
 } from "react-icons/ci";
 
-import Select from "../selectDrop/Select";
 import Nav from "./nav/Nav";
+import Select from "../selectDrop/Select";
 import Logo from "./images/EazyShoppy.png";
+import { useProductContext } from "../../utility/ProductContext";
 
 const Header = () => {
   const [isOpenDropDown, setIsOpenDropDown] = useState(false);
   const headerRef = useRef(null);
   const navigate = useNavigate();
   const { wishlistItems, cartItems } = useContext(CartContext);
+  // const [products, setProducts] = useState([]); // State to store all products
+  const { products } = useProductContext();
+  const [searchTerm, setSearchTerm] = useState(""); // State to store the search term
+  const [isOpen, setIsOpen] = useState(false);
+  const [filteredProducts, setFilteredProducts] = useState([]); // State to store filtered products
+
+  // Filter products based on the search term
+  useEffect(() => {
+    if (searchTerm) {
+      const filtered = products.filter((product) =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts(products); // If search term is empty, show all products
+    }
+  }, [searchTerm, products]);
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
   const handleOpenMenu = () => {
     setIsOpenDropDown(!isOpenDropDown);
@@ -86,6 +109,21 @@ const Header = () => {
     };
   }, []);
 
+  // const items = [
+  //   "Apple",
+  //   "Banana",
+  //   "Cherry",
+  //   "Date",
+  //   "Elderberry",
+  //   "Fig",
+  //   "Grape",
+  //   "Honeydew",
+  //   "Honeydew",
+  //   "Honeydew",
+  //   "Honeydew",
+  //   // Add more items as needed
+  // ];
+
   return (
     <>
       <header ref={headerRef}>
@@ -99,10 +137,42 @@ const Header = () => {
             <div className="col-sm-5">
               <div className="headerSearch d-flex align-items-center">
                 <div className="search">
-                  <input type="text" placeholder="Search for items..." />
+                  <input
+                    type="text"
+                    placeholder="Search for items..."
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    onFocus={() => setIsOpen(true)}
+                    onBlur={() => setTimeout(() => setIsOpen(false), 200)}
+                  />
                   <IoIosSearch className="searchIcon cursor position-relative" />
                 </div>
               </div>
+              {/* Display Filtered Products */}
+              {isOpen && (
+                <div className="mt-4 searchBarResults ">
+                  <ul className="list-group">
+                    {filteredProducts.length > 0 ? (
+                      filteredProducts.map((product) => (
+                        <li key={product.productId} className="list-group-item">
+                          {product.name}
+                        </li>
+                      ))
+                    ) : (
+                      <div
+                        style={{
+                          padding: "10px",
+                          color: "#999",
+                          backgroundColor: "#fff",
+                          border: "black",
+                        }}
+                      >
+                        No results found
+                      </div>
+                    )}
+                  </ul>
+                </div>
+              )}
             </div>
             {/* header search end hear */}
 
