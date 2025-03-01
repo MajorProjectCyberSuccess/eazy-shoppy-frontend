@@ -333,8 +333,10 @@ const CheckOut = () => {
                   cartItems.map((item) => (
                     <div key={item.id} className="cart-item">
                       <p>
-                        {item.productName} - ${item.totalAmount}{" "}
-                        {/* {item.quantity} */}
+                        {item.productName.length > 30
+                          ? item.productName.substr(0, 30) + "..."
+                          : item.productName}{" "}
+                        - ${item.totalAmount} {/* {item.quantity} */}
                       </p>
                     </div>
                   ))
