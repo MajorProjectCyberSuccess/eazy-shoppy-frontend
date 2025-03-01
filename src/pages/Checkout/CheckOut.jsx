@@ -1,5 +1,5 @@
 import "./CheckOut.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
@@ -11,11 +11,13 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
+import { CartContext } from "../../utility/CartContext";
 
 const CheckOut = () => {
+  const { cartItems } = useContext(CartContext);
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItem, setCartItems] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
   const [addresses, setAddresses] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
@@ -32,6 +34,8 @@ const CheckOut = () => {
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const navigate = useNavigate();
 
+  console.log(cartItem);
+
   // Fetch countries
   const getCountry = async (url) => {
     try {
@@ -47,18 +51,11 @@ const CheckOut = () => {
   };
 
   // Fetch cart items and total
-  const fetchCartData = async () => {
+  const fetchCartData = () => {
     try {
-      const userId = localStorage.getItem("userId");
-      const response = await axios.get(
-        `http://localhost:8000/api/cart/items?userId=${userId}`
-      );
-      setCartItems(response.data);
+      // console.log(cartItems);
+      const total = cartItems.reduce((sum, item) => sum + item.totalAmount, 0);
 
-      const total = response.data.reduce(
-        (sum, item) => sum + item.product.price * item.quantity,
-        0
-      );
       setCartTotal(total);
     } catch (error) {
       console.error("Error fetching cart data:", error);
@@ -143,7 +140,7 @@ const CheckOut = () => {
         userId,
         addressId: selectedAddress.id,
         cartItems: cartItems.map((item) => ({
-          productId: item.product.id,
+          productId: item.productId,
           quantity: item.quantity,
         })),
         totalAmount: cartTotal,
@@ -336,8 +333,8 @@ const CheckOut = () => {
                   cartItems.map((item) => (
                     <div key={item.id} className="cart-item">
                       <p>
-                        {item.product.name} - ${item.product.price} x{" "}
-                        {item.quantity}
+                        {item.productName} - ${item.totalAmount}{" "}
+                        {/* {item.quantity} */}
                       </p>
                     </div>
                   ))

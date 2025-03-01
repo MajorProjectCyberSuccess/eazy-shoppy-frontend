@@ -128,7 +128,7 @@ const ProductDetail = () => {
       productId: product.productId,
       name: product.name,
       discountedPrice: product.discountedPrice,
-      quantity: 1,
+      quantity: inputValue,
       image: images[product.productId] || "no image",
     };
     addToCart(productToAdd);

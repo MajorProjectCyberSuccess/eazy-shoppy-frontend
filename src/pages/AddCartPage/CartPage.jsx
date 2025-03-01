@@ -18,7 +18,7 @@ const CartPage = () => {
   useEffect(() => {
     if (cartItems) {
       setCartDetails(cartItems);
-      // console.log(cartItems);
+      console.log(cartItems);
     }
   }, [cartItems]);
 
@@ -27,8 +27,8 @@ const CartPage = () => {
     const fetchDetails = async () => {
       if (cartItems.length > 0) {
         const updatedCart = await Promise.all(
-          cartItems.map(async (item) => {
-            const productData = await fetchProductById(item.productId); // Fetch product details
+          cartItems.map((item) => {
+            const productData = fetchProductById(item.productId); // Fetch product details
             return { ...item, ...productData }; // Merge cart item with product details
           })
         );
@@ -81,15 +81,15 @@ const CartPage = () => {
                 </thead>
                 <tbody>
                   {cartDetails.map((item, index) => (
-                    <tr key={item.id || index}>
+                    <tr key={item.productId || index}>
                       <td>
                         <div className="d-flex align-items-center">
                           <img src={item.image} alt={item.name} />
                           <p>
-                            {item && item.name
-                              ? item.name.length > 40
-                                ? item.name.substr(0, 40) + "..."
-                                : item.name
+                            {item && item.productName
+                              ? item.productName.length > 40
+                                ? item.productName.substr(0, 40) + "..."
+                                : item.productName
                               : "No Name"}
                           </p>
                         </div>
