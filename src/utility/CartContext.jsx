@@ -144,7 +144,11 @@ export const CartProvider = ({ children }) => {
     }
 
     try {
-      await axios.delete(`http://localhost:8000/api/cart/delete/${id}`);
+      await axios.delete(`http://localhost:8000/api/cart/delete/${id}`, {
+        headers: {
+          userId: userId,
+        },
+      });
 
       // Fetch updated cart items
       const response = await axios.get(

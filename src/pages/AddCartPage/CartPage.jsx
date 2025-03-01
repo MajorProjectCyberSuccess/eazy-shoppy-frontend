@@ -11,14 +11,14 @@ import { AiFillDelete } from "react-icons/ai";
 const CartPage = () => {
   const { cartItems, updateQuantity, removeFromCart, isLoading, error } =
     useContext(CartContext);
-  const { images, fetchProductImage, fetchProductById } = useProductContext();
+  const { fetchProductById } = useProductContext();
   const [cartDetails, setCartDetails] = useState([]);
 
   // Sync local state with context cartItems
   useEffect(() => {
     if (cartItems) {
       setCartDetails(cartItems);
-      console.log(cartItems);
+      // console.log(cartItems);
     }
   }, [cartItems]);
 
@@ -44,6 +44,8 @@ const CartPage = () => {
       (acc, item) => acc + item.totalAmount * item.quantity,
       0
     );
+
+  // console.log(cartItems.id);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;

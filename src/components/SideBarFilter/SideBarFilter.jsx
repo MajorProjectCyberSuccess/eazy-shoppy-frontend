@@ -1,12 +1,8 @@
 import "./SideFilter.css";
 import { useState } from "react";
-
 import PropTypes from "prop-types";
-
 import { useCategories } from "../../utility/CategoryContext";
-
 import { LiaFilterSolid } from "react-icons/lia";
-
 import Slider from "@mui/material/Slider";
 import { styled } from "@mui/material/styles";
 import Checkbox from "@mui/material/Checkbox";
@@ -103,7 +99,7 @@ const SideBarFilter = ({ onCategorySelect }) => {
 
   const handleCategoryClick = (category) => {
     if (onCategorySelect) {
-      onCategorySelect(category);
+      onCategorySelect(category); // Pass the selected category to the parent component
     }
   };
 
