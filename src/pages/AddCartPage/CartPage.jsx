@@ -94,7 +94,7 @@ const CartPage = () => {
                           </p>
                         </div>
                       </td>
-                      <td>₹{item.totalAmount}</td>
+                      <td>₹{item.totalAmount.toFixed(2)}</td>
                       <td>
                         <button
                           onClick={() =>

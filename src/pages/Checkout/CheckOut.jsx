@@ -413,7 +413,7 @@ const CheckOut = () => {
                         {item.productName.length > 30
                           ? item.productName.substr(0, 30) + "..."
                           : item.productName}{" "}
-                        - ${item.totalAmount} {/* {item.quantity} */}
+                        - ${item.totalAmount.toFixed(2)} {/* {item.quantity} */}
                       </p>
                     </div>
                   ))

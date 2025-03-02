@@ -49,7 +49,8 @@ const UserOrders = () => {
                   <h5 className="card-text">Order No: {index + 1}</h5> <hr />
                   <h5 className="card-title">Order ID: {order.trackingId}</h5>
                   <p className="card-text">
-                    <strong>Total Amount:</strong> ₹{order.totalAmount}
+                    <strong>Total Amount:</strong> ₹
+                    {order.totalAmount.toFixed(2)}
                   </p>
                   <p className="card-text">
                     <strong>Address:</strong> {order.address}
@@ -73,7 +74,7 @@ const UserOrders = () => {
                           - {item.brand}
                         </div>
                         <span className="badge bg-primary rounded-pill">
-                          ₹{item.discountedPrice}
+                          ₹{item.discountedPrice.toFixed(2)}
                         </span>
                       </li>
                     ))}

@@ -131,11 +131,14 @@ const Home = () => {
 
           <div className="row productRow pt-2">
             {filteredProducts.length > 0 ? (
-              filteredProducts.map((product) => (
-                <div className="item" key={product.productId}>
-                  <Product product={product} />
-                </div>
-              ))
+              filteredProducts
+                .slice(0, 10) // Select only 10 products
+                .reverse()
+                .map((product) => (
+                  <div className="item" key={product.productId}>
+                    <Product product={product} />
+                  </div>
+                ))
             ) : (
               <div>No products available in this category.</div>
             )}

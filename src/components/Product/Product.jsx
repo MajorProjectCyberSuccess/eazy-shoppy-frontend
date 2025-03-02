@@ -93,7 +93,7 @@ const Product = ({ product }) => {
         <div className="d-flex align-items-center mt-3">
           <div className="d-flex align-items-center priceWrap">
             <span className="price text-g font-weight-bold">
-              ₹{product.discountedPrice}
+              ₹{product.discountedPrice.toFixed(2)}
             </span>
             {/* {product.originalPrice && (
               <span className="oldPrice">${product.originalPrice}</span>

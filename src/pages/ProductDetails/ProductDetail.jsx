@@ -212,7 +212,7 @@ const ProductDetail = () => {
               </div>
               <div className="priceSec d-flex align-items-center mb-3">
                 <span className="text-g priceLarge">
-                  ₹{product.discountedPrice}
+                  ₹{product.discountedPrice.toFixed(2)}
                 </span>
                 <div className="ml-2 d-flex flex-column">
                   <span className="text-org">{product.discount}%</span>
