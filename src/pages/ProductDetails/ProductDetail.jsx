@@ -1,11 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 
 import "./ProductDetail.css";
-// import bhakar1 from "./images/bhakar1.jpg";
-// import bhakar2 from "./images/bhakar2.jpg";
-// import bhakar3 from "./images/bhakar3.jpg";
-// import bhakar4 from "./images/bhakar4.jpg";
-// import bhakar5 from "./images/bhakar5.jpg";
 
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -29,9 +24,14 @@ import { useProductContext } from "../../utility/ProductContext";
 const ProductDetail = () => {
   const { id } = useParams();
   const { addToCart, addToWishlist } = useContext(CartContext);
-  const { images, fetchProductImage, fetchProductById } = useProductContext();
+  const {
+    images,
+    fetchProductImage,
+    fetchProductById,
+    fetchProductsByCategoryId,
+  } = useProductContext();
   const [product, setProduct] = useState(null);
-  const [relatedProducts] = useState([]); // Related products
+  const [relatedProducts, setRelatedProducts] = useState([]); // Related products
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,10 +39,14 @@ const ProductDetail = () => {
       setProduct(data);
       if (data) {
         fetchProductImage(data.productId);
+
+        const related = await fetchProductsByCategoryId(data.categoryId);
+        console.log(related);
+        setRelatedProducts(related);
       }
     };
     fetchData();
-  }, [id, fetchProductById, fetchProductImage]);
+  }, [id, fetchProductById, fetchProductImage, fetchProductsByCategoryId]);
 
   // State hooks
   // const [selectedImage, setSelectedImage] = useState(productData.images[0]);
@@ -211,7 +215,7 @@ const ProductDetail = () => {
                   ₹{product.discountedPrice}
                 </span>
                 <div className="ml-2 d-flex flex-column">
-                  <span className="text-org">{product.discount}</span>
+                  <span className="text-org">{product.discount}%</span>
                   <span className="olPrice">₹{product.originalPrice}</span>
                 </div>
               </div>

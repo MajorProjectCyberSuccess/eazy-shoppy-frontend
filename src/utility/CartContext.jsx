@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 import PropTypes from "prop-types";
 
 export const CartContext = createContext();
@@ -65,7 +66,23 @@ export const CartProvider = ({ children }) => {
           },
         }
       );
-      alert("Item added");
+
+      toast.success("Order placed successfully!", {
+        style: {
+          border: "1px solid #4CAF50",
+          padding: "16px",
+          color: "#FFFFFF",
+          backgroundColor: "#66BB6A",
+          borderRadius: "8px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+          fontSize: "14px",
+          fontWeight: "500",
+        },
+        iconTheme: {
+          primary: "#FFFFFF",
+          secondary: "#66BB6A",
+        },
+      });
 
       // Fetch updated cart items
       const response = await axios.get(
@@ -128,7 +145,7 @@ export const CartProvider = ({ children }) => {
           },
         }
       );
-      setCartItems(response.data);
+      setCartItems(response.data.data);
     } catch (error) {
       console.error("Error updating cart item:", error);
       setError("Failed to update item quantity.");
@@ -159,7 +176,7 @@ export const CartProvider = ({ children }) => {
           },
         }
       );
-      setCartItems(response.data);
+      setCartItems(response.data.data);
     } catch (error) {
       console.error("Error removing item from cart:", error);
       setError("Failed to remove item from cart.");

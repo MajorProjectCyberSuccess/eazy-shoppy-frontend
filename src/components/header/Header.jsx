@@ -30,11 +30,10 @@ const Header = () => {
   const headerRef = useRef(null);
   const navigate = useNavigate();
   const { wishlistItems, cartItems } = useContext(CartContext);
-  // const [products, setProducts] = useState([]); // State to store all products
   const { products } = useProductContext();
-  const [searchTerm, setSearchTerm] = useState(""); // State to store the search term
+  const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [filteredProducts, setFilteredProducts] = useState([]); // State to store filtered products
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   // Filter products based on the search term
   useEffect(() => {
@@ -109,28 +108,15 @@ const Header = () => {
     };
   }, []);
 
-  // const items = [
-  //   "Apple",
-  //   "Banana",
-  //   "Cherry",
-  //   "Date",
-  //   "Elderberry",
-  //   "Fig",
-  //   "Grape",
-  //   "Honeydew",
-  //   "Honeydew",
-  //   "Honeydew",
-  //   "Honeydew",
-  //   // Add more items as needed
-  // ];
-
   return (
     <>
       <header ref={headerRef}>
         <div className="container-fluid">
           <div className="row">
             <div className="col-sm-2">
-              <img src={Logo} className="logo" />
+              <Link to="/">
+                <img src={Logo} className="logo" />
+              </Link>
             </div>
 
             {/* header search start hear */}
@@ -240,12 +226,14 @@ const Header = () => {
                               </button>
                             </li>
                             <li>
-                              <button
-                                className="btn align-items-center"
-                                onClick={handleOpenMenu}
-                              >
-                                <CiLocationOn /> Order Tracking
-                              </button>
+                              <Link to={"/shop/orders"}>
+                                <button
+                                  className="btn align-items-center"
+                                  onClick={handleOpenMenu}
+                                >
+                                  <CiLocationOn /> Order Tracking
+                                </button>
+                              </Link>
                             </li>
                             <li>
                               <Link to={"/shop/wishlist"}>

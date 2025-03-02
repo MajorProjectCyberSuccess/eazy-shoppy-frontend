@@ -1,29 +1,29 @@
+import "./UserOrders.css";
 import { useEffect, useState } from "react";
-import { orderService } from "./orderService";
+import axios from "axios";
 
 const UserOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const userId = localStorage.getItem("userId"); // Get the logged-in user's ID
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const userOrders = await orderService.fetchOrdersByUserId(userId);
-        setOrders(userOrders);
-      } catch (error) {
-        setError("Failed to fetch orders. Please try again.");
-        console.error("Error fetching orders:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (userId) {
-      fetchOrders();
-    }
+    axios
+      .get("http://localhost:8000/api/order/getOrderByUserId", {
+        headers: { userId },
+      })
+      .then((res) => {
+        if (Array.isArray(res.data.data)) {
+          console.log("Orders:", res.data.data);
+          setOrders(res.data.data);
+        } else {
+          setError("Expected an array of orders but got something else.");
+        }
+      })
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
   }, [userId]);
 
   if (loading) {
@@ -35,34 +35,54 @@ const UserOrders = () => {
   }
 
   return (
-    <div>
-      <h2>Your Orders</h2>
+    <div className="container mt-4">
+      {/* <Popup title="Custom Title" message="This is a custom message." /> */}
+      <h2 className="mb-3">Your Orders</h2>
       {orders.length === 0 ? (
         <p>No orders found.</p>
       ) : (
-        orders.map((order) => (
-          <div
-            key={order.id}
-            style={{
-              border: "1px solid #ccc",
-              padding: "10px",
-              marginBottom: "10px",
-            }}
-          >
-            <h3>Order ID: {order.id}</h3>
-            <p>Total Amount: ${order.totalAmount.toFixed(2)}</p>
-            <p>Address ID: {order.addressId}</p>
-            <h4>Items:</h4>
-            <ul>
-              {order.orderItems.map((item) => (
-                <li key={item.productId}>
-                  Product ID: {item.productId}, Quantity: {item.quantity},
-                  Price: ${item.price.toFixed(2)}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))
+        <div className="row">
+          {orders.map((order, index) => (
+            <div key={order.id} className="col-md-6 mb-4">
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-text">Order No: {index + 1}</h5> <hr />
+                  <h5 className="card-title">Order ID: {order.trackingId}</h5>
+                  <p className="card-text">
+                    <strong>Total Amount:</strong> ₹{order.totalAmount}
+                  </p>
+                  <p className="card-text">
+                    <strong>Address:</strong> {order.address}
+                  </p>
+                  <p className="card-text">
+                    <strong>Status:</strong> {order.status || "Pending"}
+                  </p>
+                  <h6>Items:</h6>
+                  <ul className="list-group">
+                    {order.products.map((item) => (
+                      <li
+                        key={item.productId}
+                        className="list-group-item d-flex justify-content-between align-items-center"
+                      >
+                        <div>
+                          <strong>
+                            {item.name.length > 30
+                              ? item.name.substr(0, 30) + "..."
+                              : item.name}
+                          </strong>{" "}
+                          - {item.brand}
+                        </div>
+                        <span className="badge bg-primary rounded-pill">
+                          ₹{item.discountedPrice}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );

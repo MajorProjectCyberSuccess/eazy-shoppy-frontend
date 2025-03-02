@@ -1,6 +1,6 @@
 import "./Listing.css";
 import { useState } from "react";
-import { useProductContext } from "../../utility/ProductContext"; // Import the context
+import { useProductContext } from "../../utility/ProductContext";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import Product from "../../components/Product/Product";
 import SideBarFilter from "../../components/SideBarFilter/SideBarFilter";
@@ -10,13 +10,14 @@ import Banner2 from "./images/b2.jpg";
 
 const Listing = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
+  // const [priceRange, setPriceRange] = useState([0, 1000]);
   const {
     products,
     fetchProductsByCategoryId,
     fetchAllProducts,
     loading,
     error,
-  } = useProductContext(); // Access context functions and state
+  } = useProductContext();
 
   // Handle category selection
   const handleCategorySelect = async (category) => {
@@ -29,6 +30,11 @@ const Listing = () => {
     }
   };
 
+  // Handle price range change
+  const handlePriceChange = () => {
+    // setPriceRange(newPriceRange); // Update the price range state
+  };
+
   // Breadcrumb items
   const breadcrumbItems = [
     { name: "Home", path: "/" },
@@ -39,10 +45,14 @@ const Listing = () => {
     },
   ];
 
-  // Filter products based on the selected category
-  const filteredProducts = selectedCategory
-    ? products.filter((product) => product.categoryName === selectedCategory)
-    : products;
+  // Filter products based on the selected category and price range
+  const filteredProducts = products.filter((product) =>
+    selectedCategory ? product.categoryName === selectedCategory : true
+  );
+  // .filter(
+  //   (product) =>
+  //     product.price >= priceRange[0] && product.price <= priceRange[1]
+  // );
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -61,7 +71,10 @@ const Listing = () => {
           {/* Sidebar */}
           <div className="col-md-3 sideBarWrapper">
             <div className="card">
-              <SideBarFilter onCategorySelect={handleCategorySelect} />
+              <SideBarFilter
+                onCategorySelect={handleCategorySelect}
+                onPriceChange={handlePriceChange}
+              />
             </div>
             <div>
               <div className="bannerImg">

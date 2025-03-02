@@ -101,7 +101,7 @@ export const ProductProvider = ({ children }) => {
           headers: { categoryId },
         }
       );
-      setProducts(response.data.data);
+      return response.data.data;
     } catch (err) {
       setError(err.message);
     }

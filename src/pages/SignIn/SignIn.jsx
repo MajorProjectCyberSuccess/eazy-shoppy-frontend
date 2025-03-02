@@ -1,10 +1,8 @@
 import "./SignIn.css";
 import { useState } from "react";
-
 import axios from "axios";
-
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -15,10 +13,28 @@ const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Validate email format
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
     setError("");
+
+    // Client-side validation
+    if (!email || !password) {
+      setError("Please fill in all fields.");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    setIsLoading(true);
 
     try {
       const response = await axios.post(
@@ -29,17 +45,43 @@ const SignIn = () => {
         }
       );
 
+      // Validate API response
       if (response.status === 200 && response.data.status === "Success") {
         const userId = response.data.data;
+
+        // Store user ID and token (if available) in localStorage
         localStorage.setItem("userId", userId);
-        alert("Login successful!");
-        navigate("/");
+
+        // Optionally, store a token if the API returns one
+        if (response.data.token) {
+          localStorage.setItem("authToken", response.data.token);
+        }
+
+        toast.success("Logged in successfully!", {
+          style: {
+            border: "1px solid #713200",
+            padding: "16px",
+            color: "#713200",
+            backgroundColor: "#f0f0f0",
+          },
+        });
+        navigate("/"); // Redirect to the home page or dashboard
       } else {
         setError("Invalid login. Please check your credentials.");
       }
     } catch (error) {
       console.error("Login Error:", error);
-      setError("Login failed. Please try again later.");
+
+      // Handle specific error messages from the API
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        setError(error.response.data.message);
+      } else {
+        setError("Login failed. Please try again later.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -76,8 +118,12 @@ const SignIn = () => {
                 required
               />
             </div>
-            <button type="submit" className="signin-button">
-              Sign In
+            <button
+              type="submit"
+              className="signin-button"
+              disabled={isLoading} // Disable button during loading
+            >
+              {isLoading ? "Signing In..." : "Sign In"}
             </button>
           </form>
           <div className="signup-link">
@@ -86,6 +132,7 @@ const SignIn = () => {
         </div>
       </div>
 
+      {/* Loading backdrop */}
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={isLoading}

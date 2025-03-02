@@ -61,7 +61,6 @@ const BpCheckedIcon = styled(BpIcon)({
   },
 });
 
-// Inspired by blueprintjs
 function BpCheckbox(props) {
   return (
     <Checkbox
@@ -80,7 +79,7 @@ function valuetext(value) {
   return `${value}°C`;
 }
 
-const SideBarFilter = ({ onCategorySelect }) => {
+const SideBarFilter = ({ onCategorySelect, onPriceChange }) => {
   const [value, setValue] = useState([0, 1000]);
   const { categories, loading, error } = useCategories();
 
@@ -95,6 +94,9 @@ const SideBarFilter = ({ onCategorySelect }) => {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    if (onPriceChange) {
+      onPriceChange(newValue); // Pass the new price range to the parent component
+    }
   };
 
   const handleCategoryClick = (category) => {
@@ -189,6 +191,7 @@ const SideBarFilter = ({ onCategorySelect }) => {
 
 SideBarFilter.propTypes = {
   onCategorySelect: PropTypes.func,
+  onPriceChange: PropTypes.func, // Add prop type for price change callback
 };
 
 export default SideBarFilter;

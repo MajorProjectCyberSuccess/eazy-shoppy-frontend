@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
 
+import toast from "react-hot-toast";
+
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -59,7 +61,18 @@ const CheckOut = () => {
       setCartTotal(total);
     } catch (error) {
       console.error("Error fetching cart data:", error);
-      alert("Failed to fetch cart items. Please try again.");
+      toast.error("Failed to fetch cart items. Please try again.", {
+        style: {
+          border: "1px solid #FF6B6B",
+          padding: "16px",
+          color: "#FFFFFF",
+          backgroundColor: "#FF6B6B",
+          borderRadius: "8px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+          fontSize: "14px",
+          fontWeight: "500",
+        },
+      });
     }
   };
 
@@ -117,17 +130,54 @@ const CheckOut = () => {
       );
       setAddresses((prevAddresses) => [...prevAddresses, response.data.data]);
       setSelectedAddress(response.data.data);
-      alert("Address saved successfully!");
+      toast.success("Address saved successfully!", {
+        style: {
+          border: "1px solid #4CAF50",
+          padding: "16px",
+          color: "#FFFFFF",
+          backgroundColor: "#66BB6A",
+          borderRadius: "8px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+          fontSize: "14px",
+          fontWeight: "500",
+        },
+        iconTheme: {
+          primary: "#FFFFFF",
+          secondary: "#66BB6A",
+        },
+      });
     } catch (error) {
       console.error("Error saving new address:", error);
-      alert("Failed to save address. Please try again.");
+      toast.error("Failed to save address. Please try again.", {
+        style: {
+          border: "1px solid #FF6B6B",
+          padding: "16px",
+          color: "#FFFFFF",
+          backgroundColor: "#FF6B6B",
+          borderRadius: "8px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+          fontSize: "14px",
+          fontWeight: "500",
+        },
+      });
     }
   };
 
   // Handle checkout
   const handleCheckout = async () => {
     if (!selectedAddress) {
-      alert("Please select or add an address");
+      toast.error("Please select or add an address.", {
+        style: {
+          border: "1px solid #FF6B6B",
+          padding: "16px",
+          color: "#FFFFFF",
+          backgroundColor: "#FF6B6B",
+          borderRadius: "8px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+          fontSize: "14px",
+          fontWeight: "500",
+        },
+      });
       return;
     }
 
@@ -144,10 +194,11 @@ const CheckOut = () => {
           quantity: item.quantity,
         })),
         totalAmount: cartTotal,
+        status: "pending",
       };
 
       const response = await axios.post(
-        "http://localhost:8000/api/orders",
+        "http://localhost:8000/api/order/create",
         orderPayload
       );
       console.log(response);
@@ -157,10 +208,36 @@ const CheckOut = () => {
 
       // Redirect to the orders page
       navigate("/shop/orders");
-      alert("Order placed successfully!");
+      toast.success("Order placed successfully!", {
+        style: {
+          border: "1px solid #4CAF50",
+          padding: "16px",
+          color: "#FFFFFF",
+          backgroundColor: "#66BB6A",
+          borderRadius: "8px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+          fontSize: "14px",
+          fontWeight: "500",
+        },
+        iconTheme: {
+          primary: "#FFFFFF",
+          secondary: "#66BB6A",
+        },
+      });
     } catch (error) {
       console.error("Error placing order:", error);
-      setError("Failed to place order. Please try again.");
+      toast.error("Failed to place order. Please try again.", {
+        style: {
+          border: "1px solid #FF6B6B",
+          padding: "16px",
+          color: "#FFFFFF",
+          backgroundColor: "#FF6B6B",
+          borderRadius: "8px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+          fontSize: "14px",
+          fontWeight: "500",
+        },
+      });
     } finally {
       setCheckoutLoading(false); // Hide loading spinner
     }

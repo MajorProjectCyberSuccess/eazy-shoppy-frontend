@@ -1,6 +1,8 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import { Toaster } from "react-hot-toast";
+
 import { CategoryProvider } from "./utility/CategoryContext";
 import { ProductProvider } from "./utility/ProductContext";
 import { CartProvider } from "./utility/CartContext";
@@ -30,6 +32,7 @@ function App() {
         <ProductProvider>
           <BrowserRouter>
             <Header />
+            <Toaster position="top-center" reverseOrder={true} />
             <Routes>
               <Route exact={true} path="/" element={<Home />} />
               <Route exact={true} path="/shop/:id" element={<Listing />} />
