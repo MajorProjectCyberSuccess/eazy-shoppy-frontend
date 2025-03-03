@@ -55,7 +55,7 @@ const CheckOut = () => {
   // Fetch cart items and total
   const fetchCartData = () => {
     try {
-      // console.log(cartItems);
+      console.log("items: ", cartItems);
       const total = cartItems.reduce((sum, item) => sum + item.totalAmount, 0);
 
       setCartTotal(total);
